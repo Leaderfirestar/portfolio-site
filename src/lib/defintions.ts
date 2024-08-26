@@ -10,10 +10,18 @@ interface Media {
 	};
 }
 
+export interface RichTextNode {
+	type: string;
+	children?: RichTextNode[];
+	level?: number;
+	format?: string;
+	text?: string;
+}
+
 export interface Project {
 	id: number;
 	title: string;
-	description: string;
+	description: RichTextNode[];
 	slug: string;
 	image: {
 		data: Media | null;
