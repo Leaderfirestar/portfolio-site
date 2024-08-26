@@ -3,7 +3,6 @@ import { Project, SingularThing, StrapiFindResponse, StrapiSingleThingResponse }
 export async function fetchProjects(): Promise<Project[]> {
 	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?populate=*`);
 	const json = await response.json() as StrapiFindResponse<Project>;
-	console.log('PROJECTS JSON', json);
 	if (json.data) return json.data;
 	console.error(json.error);
 	return [];
