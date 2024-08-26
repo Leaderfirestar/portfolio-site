@@ -1,6 +1,7 @@
 "use client";
 
 import useEmblaCarousel from "embla-carousel-react";
+import Image from "next/image";
 import { useCallback } from 'react';
 
 interface Slide {
@@ -38,7 +39,7 @@ function EmblaCarouselComponent({ slides }: EmblaCarouselProps) {
 					{/* Your slides */}
 					{slides.map(slide => (
 						<div className="embla__slide" key={slide.id}>
-							<img src={slide.url} alt={slide.alt} className="embla__image" />
+							<Image src={slide.url} alt={slide.alt} width={0} height={0} sizes="100vh" style={{ height: "auto", width: "100%" }} className="embla__image" />
 						</div>
 					))}
 				</div>

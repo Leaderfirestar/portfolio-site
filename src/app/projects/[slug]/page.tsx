@@ -42,34 +42,37 @@ async function ProjectPage({ params }: ProjectPageProps) {
 
 	return (
 		<div>
+			{/* <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}> */}
 			<h1>{project.attributes.title}</h1>
-			{project.attributes.image?.data?.attributes.url && (
-				<Image src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${project.attributes.image.data.attributes.url}`} alt={project.attributes.title} width={192} height={192} priority />
-			)}
-			<h2>Tech Stack</h2>
-			<div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", columnGap: "5px" }}>
-				{project.attributes.technologies.data.map((tech) => {
-					return (
-						<div key={tech.id} style={{ display: "flex", flexDirection: "column" }}>
-							<div style={{ backgroundColor: "#FFF", width: "96px" }}>
-								<Image src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${tech.attributes.logo?.data?.attributes.url}`} width={96} height={96} alt={tech.attributes.logo?.data?.attributes.alternativeText || ""} style={{ display: "flex" }} />
-							</div>
-							<span style={{ textAlign: "center", overflow: 'hidden' }}>{tech.attributes.name}</span>
-						</div>
-					);
-				})}
-			</div>
-			<RichTextRenderer nodes={project.attributes.description} />
+			{/* {project.attributes.image?.data?.attributes.url && (
+					<Image src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${project.attributes.image.data.attributes.url}`} alt={project.attributes.title} width={96} height={96} style={{ display: "flex", justifySelf: "right	" }} priority />
+				)} */}
+			{/* </div> */}
 			{project.attributes.gallery && project.attributes.gallery?.data?.length > 0 && (
-				<div>
-					<h2>Gallery</h2>
+				<div style={{ display: "flex", flexDirection: "row", columnGap: "50px", height: "300px" }}>
 					<EmblaCarouselComponent slides={project.attributes.gallery.data.map(image => ({
 						id: image.id,
 						url: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${image.attributes.url}`,
 						alt: image.attributes.alternativeText || ''
-					})) || []} />
+					})) || []}
+					/>
+					<div style={{ display: "flex", flexDirection: "column", width: "40%", overflowY: "auto" }}>
+						<div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", columnGap: "5px" }}>
+							{project.attributes.technologies.data.map((tech) => {
+								return (
+									<div key={tech.id} style={{ display: "flex", flexDirection: "column" }}>
+										<div style={{ backgroundColor: "#FFF", width: "96px" }}>
+											<Image src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${tech.attributes.logo?.data?.attributes.url}`} width={96} height={96} alt={tech.attributes.logo?.data?.attributes.alternativeText || ""} style={{ display: "flex" }} />
+										</div>
+										<span style={{ textAlign: "center", overflow: 'hidden' }}>{tech.attributes.name}</span>
+									</div>
+								);
+							})}
+						</div>
+					</div>
 				</div>
 			)}
+			<RichTextRenderer nodes={project.attributes.description} />
 		</div>
 	);
 };
