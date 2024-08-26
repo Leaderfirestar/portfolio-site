@@ -1,3 +1,4 @@
+import RichTextRenderer from '@/components/RichTextRenderer';
 import { fetchProjectBySlug } from '@/lib/projects';
 import { Metadata } from 'next';
 import Image from 'next/image';
@@ -37,7 +38,6 @@ async function ProjectPage({ params }: ProjectPageProps) {
 			return <p>Project not found</p>;
 		}
 
-		console.log(`URL: '${project.attributes.image.data?.attributes.url}'`);
 		return (
 			<div>
 				<h1>{project.attributes.title}</h1>
@@ -46,8 +46,7 @@ async function ProjectPage({ params }: ProjectPageProps) {
 				)}
 				<div>
 					<h2>Description</h2>
-					{/* Render the rich text content */}
-					<div dangerouslySetInnerHTML={{ __html: project.attributes.description }} />
+					<RichTextRenderer nodes={project.attributes.description} />
 				</div>
 				<h2>Technologies Used</h2>
 				<ul>
@@ -63,7 +62,7 @@ async function ProjectPage({ params }: ProjectPageProps) {
 								<ul className="splide__list">
 									{project.attributes.gallery.data.map((image) => (
 										<li key={image.id} className="splide__slide">
-											<Image src={image.attributes.url} alt={""} width={192} height={192} />
+											<Image src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${image.attributes.url}`} alt={""} width={192} height={192} />
 										</li>
 									))}
 								</ul>
