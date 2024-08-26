@@ -1,12 +1,47 @@
 interface Media {
 	id: number;
 	attributes: {
-		url: string;
+		name: string,
+		alternativeText: string,
+		caption: string | null,
+		width: number,
+		height: number,
 		formats?: {
-			thumbnail?: {
+			thumbnail: {
+				name: string;
+				hash: string;
+				ext: string;
+				mime: string;
+				path: string | null,
+				width: number,
+				height: number,
+				size: number,
+				sizeInBytes: number,
+				url: string;
+			},
+			small: {
+				name: string;
+				hash: string;
+				ext: string;
+				mime: string;
+				path: null,
+				width: number,
+				height: number,
+				size: number,
+				sizeInBytes: number,
 				url: string;
 			};
 		};
+		hash: string,
+		ext: string,
+		mime: string,
+		size: number,
+		url: string,
+		previewUrl: string | null,
+		provider: string,
+		provider_metadata: null,
+		createdAt: string,
+		updatedAt: string;
 	};
 }
 
@@ -19,7 +54,6 @@ export interface RichTextNode {
 }
 
 export interface Project {
-	id: number;
 	title: string;
 	description: RichTextNode[];
 	slug: string;
@@ -30,14 +64,13 @@ export interface Project {
 		data: Media[];
 	};
 	technologies: {
-		data: Technology[];
+		data: SingularThing<Technology>[];
 	};
 	projectUrl: string;
 	sortIndex: number;
 }
 
 export interface Technology {
-	id: number;
 	name: string;
 	logo?: {
 		data: Media | null;
