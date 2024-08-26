@@ -108,7 +108,7 @@ interface StrapiFindThing<T> {
 	meta: StrapiFindMeta;
 }
 
-interface StrapiFindThingError {
+export interface StrapiFindThingError {
 	data: null;
 	error: StrapiFindErrorInterface;
 }
