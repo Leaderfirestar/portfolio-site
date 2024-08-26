@@ -40,20 +40,30 @@ async function ProjectPage({ params }: ProjectPageProps) {
 
 		return (
 			<div>
-				<h1>{project.attributes.title}</h1>
-				{project.attributes.image?.data?.attributes.url && (
-					<Image src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${project.attributes.image.data.attributes.url}`} alt={project.attributes.title} width={192} height={192} />
-				)}
-				<div>
-					<h2>Description</h2>
-					<RichTextRenderer nodes={project.attributes.description} />
+				<div style={{ display: "flex", flexDirection: "row" }}>
+					<div style={{ width: "30%" }}>
+						<h1>{project.attributes.title}</h1>
+						{project.attributes.image?.data?.attributes.url && (
+							<Image src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${project.attributes.image.data.attributes.url}`} alt={project.attributes.title} width={192} height={192} priority />
+						)}
+					</div>
+					<div style={{ width: "70%" }}>
+						<h2>Technologies Used</h2>
+						<div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", columnGap: "5px" }}>
+							{project.attributes.technologies.data.map((tech) => {
+								return (
+									<div key={tech.id} style={{ display: "flex", flexDirection: "column" }}>
+										<div style={{ backgroundColor: "#FFF", width: "96px" }}>
+											<Image src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${tech.attributes.logo?.data?.attributes.url}`} width={96} height={96} alt={tech.attributes.logo?.data?.attributes.alternativeText || ""} style={{ display: "flex" }} />
+										</div>
+										<span style={{ textAlign: "center", overflow: 'hidden' }}>{tech.attributes.name}</span>
+									</div>
+								);
+							})}
+						</div>
+					</div>
 				</div>
-				<h2>Technologies Used</h2>
-				<ul>
-					{project.attributes.technologies.data.map((tech) => (
-						<li key={tech.id}>{tech.name}</li>
-					))}
-				</ul>
+				<RichTextRenderer nodes={project.attributes.description} />
 				{project.attributes.gallery && project.attributes.gallery?.data?.length > 0 && (
 					<div>
 						<h2>Gallery</h2>
@@ -62,7 +72,7 @@ async function ProjectPage({ params }: ProjectPageProps) {
 								<ul className="splide__list">
 									{project.attributes.gallery.data.map((image) => (
 										<li key={image.id} className="splide__slide">
-											<Image src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${image.attributes.url}`} alt={""} width={192} height={192} />
+											<Image src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${image.attributes.url}`} alt={""} width={96} height={96} />
 										</li>
 									))}
 								</ul>
