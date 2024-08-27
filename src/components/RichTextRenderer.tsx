@@ -17,9 +17,12 @@ function RichTextRenderer({ nodes }: RichTextRendererProps) {
 				const ListTag = node.format === 'ordered' ? 'ol' : 'ul';
 				return <ListTag key={key}>{renderNodes(node.children)}</ListTag>;
 			case 'list-item':
-				return <li key={key}>{renderNodes(node.children)}</li>;
+				return <li key={key} >{renderNodes(node.children)}</li>;
 			case 'text':
-				return <span key={key}>{node.text}</span>;
+				const style: React.CSSProperties = {};
+				if (node.bold) style.fontWeight = "800";
+				if (node.italic) style.fontStyle = "italic";
+				return <span key={key} style={style}>{node.text}</span>;
 			default:
 				return null;
 		}
