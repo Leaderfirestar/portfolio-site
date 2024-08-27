@@ -51,6 +51,8 @@ export interface RichTextNode {
 	level?: number;
 	format?: string;
 	text?: string;
+	bold?: boolean;
+	italic?: boolean;
 }
 
 export interface Project {
