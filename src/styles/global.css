@@ -4,24 +4,16 @@ body {
     line-height: 1.6;
     background-color: #333;
     color: #BBB;
-    margin: 20px;
+	margin: auto;
+	width: 75%;
     padding: 0;
-}
-
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #333;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
 }
 
 /* Header */
 h1 {
     font-size: 2rem;
     margin-bottom: 20px;
+	margin-top: 0px;
     color: #EEE;
 	font-weight: 800;
 }
@@ -40,10 +32,17 @@ h3 {
 	font-weight: 800;
 }
 
-/* Image Styles */
-.project-image {
-    margin: 20px 0;
-    text-align: center;
+/* Nav */
+nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	column-gap: 10px;
+}
+
+a {
+	color: #FFF;
+	font-size: 1.25rem;
 }
 
 /* styles/embla-carousel.css */
@@ -71,21 +70,6 @@ h3 {
 	display: block;
 	width: 100%;
 	height: auto;
-}
-
-/* Description */
-.description {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    line-height: 1.8;
-}
-
-.description p {
-    margin-bottom: 20px;
-}
-
-.description h2, .description h3 {
-    margin-top: 20px;
 }
 
 /* button styles */

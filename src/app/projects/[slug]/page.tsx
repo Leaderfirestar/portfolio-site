@@ -41,7 +41,7 @@ async function ProjectPage({ params }: ProjectPageProps) {
 	const project = response.data[0];
 
 	return (
-		<div style={{ width: "70%", margin: "auto" }}>
+		<div>
 			<h1>{project.attributes.title}</h1>
 			{project.attributes.gallery && project.attributes.gallery?.data?.length > 0 && (
 				<div>
