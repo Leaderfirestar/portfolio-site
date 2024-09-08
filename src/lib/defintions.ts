@@ -121,3 +121,38 @@ export interface SingularThing<T> {
 }
 
 export type StrapiSingleThingResponse<T> = StrapiFindThing<T> | StrapiFindThingError;
+
+export interface Homepage {
+	id: number;
+	attributes: {
+		bio: RichTextNode[];
+		jobTitle: string;
+		name: string;
+		profile: {
+			data: Media;
+		};
+		quotes: {
+			data: Quote[];
+		};
+		createdAt: string;
+		updatedAt: string;
+		publishedAt: string;
+	};
+}
+
+interface Quote {
+	id: number;
+	attributes: {
+		/**
+		 * Who said the quote
+		 */
+		author: string;
+		/**
+		 * The actual quote text
+		 */
+		value: string;
+		createdAt: string;
+		updatedAt: string;
+		publishedAt: string;
+	};
+}

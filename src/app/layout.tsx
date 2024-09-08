@@ -18,9 +18,9 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<nav>
+				<nav style={{ margin: "20px 0px" }}>
 					<div>
-						<Link href="/">Eric Webb</Link>
+						<Link href="/">Home</Link>
 					</div>
 					<div>
 						<Link href="/projects">Projects</Link>
