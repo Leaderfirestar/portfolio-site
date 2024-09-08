@@ -17,6 +17,11 @@
 	text-align: center;
 }
 
+.projectListItem:hover {
+	background-color: #028793;
+	transition: background-color .5s linear;
+}
+
 .projectListItemAnchor {
 	align-items: center;
 	display: flex;
