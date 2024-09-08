@@ -39,7 +39,6 @@ async function ProjectPage({ params }: ProjectPageProps) {
 		return <p>Project not found</p>;
 	}
 	const project = response.data[0];
-
 	return (
 		<div>
 			<h1>{project.attributes.title}</h1>

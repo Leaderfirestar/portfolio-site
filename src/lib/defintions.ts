@@ -56,26 +56,32 @@ export interface RichTextNode {
 }
 
 export interface Project {
-	title: string;
-	description: RichTextNode[];
-	slug: string;
-	image: {
-		data: Media | null;
+	id: number;
+	attributes: {
+		title: string;
+		description: RichTextNode[];
+		slug: string;
+		image: {
+			data: Media | null;
+		};
+		gallery: {
+			data: Media[];
+		};
+		technologies: {
+			data: Technology[];
+		};
+		projectUrl: string;
+		sortIndex: number;
 	};
-	gallery: {
-		data: Media[];
-	};
-	technologies: {
-		data: SingularThing<Technology>[];
-	};
-	projectUrl: string;
-	sortIndex: number;
 }
 
 export interface Technology {
-	name: string;
-	logo?: {
-		data: Media | null;
+	id: number;
+	attributes: {
+		name: string;
+		logo?: {
+			data: Media | null;
+		};
 	};
 }
 
@@ -106,7 +112,7 @@ interface StrapiFindList<T> {
 export type StrapiFindResponse<T> = StrapiFindList<T> | StrapiFindError;
 
 interface StrapiFindThing<T> {
-	data: SingularThing<T>[];
+	data: T[];
 	meta: StrapiFindMeta;
 }
 
@@ -134,6 +140,17 @@ export interface Homepage {
 		quotes: {
 			data: Quote[];
 		};
+		createdAt: string;
+		updatedAt: string;
+		publishedAt: string;
+	};
+}
+
+export interface Projectpage {
+	id: number;
+	attributes: {
+		name: string;
+		description: string;
 		createdAt: string;
 		updatedAt: string;
 		publishedAt: string;
