@@ -1,3 +1,4 @@
+import styles from "./page.module.css";
 import RichTextRenderer from "@/components/RichTextRenderer";
 import { fetchHomepageData } from "@/lib/homepage";
 import { Metadata } from "next";
@@ -15,21 +16,21 @@ export default async function Home() {
 	const homepageData = await fetchHomepageData();
 	return (
 		<main>
-			<div style={{ display: "flex", flexDirection: "row" }}>
-				<div style={{ display: "flex", flexDirection: "column", width: "50%", height: "400px" }}>
+			<div className={styles.container}>
+				<div className={styles.textContainer}>
 					<h1>{homepageData.attributes.name} | {homepageData.attributes.jobTitle}</h1>
 					<RichTextRenderer nodes={homepageData.attributes.bio} />
-					<ul style={{ display: "flex", flexDirection: "row", padding: "0px", justifyContent: "space-between", marginTop: "auto", marginBottom: "auto" }}>
-						{homepageData.attributes.quotes.data.map((quote) => <li key={quote.id} style={{ listStyleType: "none", maxWidth: "45%" }}>{quote.attributes.value}</li>)}
+					<ul className={styles.quoteList}>
+						{homepageData.attributes.quotes.data.map((quote) => <li key={quote.id} className={styles.quoteListItem}>{quote.attributes.value}</li>)}
 					</ul>
 				</div>
-				<div style={{ display: "flex", flexDirection: "column", width: "50%", height: "400px" }}>
+				<div className={styles.profileContainer}>
 					<Image
 						src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${homepageData.attributes.profile.data.attributes.url}`}
 						alt={homepageData.attributes.profile.data.attributes.alternativeText}
 						width={300}
 						height={400}
-						style={{ alignSelf: "flex-end" }}
+						className={styles.profile}
 						priority
 					/>
 				</div>

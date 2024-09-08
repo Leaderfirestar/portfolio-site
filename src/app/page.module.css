@@ -1,0 +1,36 @@
+.container {
+	display: flex;
+	flex-direction: row;
+}
+
+.textContainer {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	height: 400px;
+}
+
+.quoteList {
+	display: flex;
+	flex-direction: row;
+	padding: 0px;
+	justify-content: space-between;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.quoteListItem {
+	list-style-type: none;
+	max-width: 45%;
+}
+
+.profileContainer {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	height: 400px;
+}
+
+.profile {
+	align-self: flex-end;
+}
