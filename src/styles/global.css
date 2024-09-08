@@ -2,11 +2,26 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #333;
-    color: #BBB;
+    background-color: #066D77;
 	margin: auto;
 	width: 75%;
     padding: 0;
+}
+
+p {
+	color: #EDF6F9;
+}
+
+li {
+	color: #EDF6F9;
+}
+
+ul {
+	color: #EDF6F9;
+}
+
+span {
+	color: #EDF6F9;
 }
 
 /* Header */
@@ -14,21 +29,24 @@ h1 {
     font-size: 2rem;
     margin-bottom: 0px;
 	margin-top: 0px;
-    color: #EEE;
+    color: #FFDDD2;
 	font-weight: 800;
 }
 
+/* #E29578 */
 h2 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    color: #DDD;
+	margin-top: 0px;
+    color: #EDF6F9;
 	font-weight: 800;
 }
 
 h3 {
     font-size: 1rem;
     margin-bottom: 10px;
-    color: #CCC;
+    color: #EDF6F9;
+	border-top: #EDF6F9;
 	font-weight: 800;
 }
 
@@ -42,7 +60,7 @@ nav {
 }
 
 a {
-	color: #FFF;
+	color: #EDF6F9;
 	font-size: 1.25rem;
 }
 

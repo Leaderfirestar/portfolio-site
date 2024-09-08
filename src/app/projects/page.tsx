@@ -30,20 +30,25 @@ function buildProjectList(projects: Project[]) {
 					key={proj.id}
 					style={{
 						listStyleType: "none",
-						display: "flex",
-						flexDirection: "column",
-						alignItems: "center"
+						backgroundColor: "#01727c"
 					}}
 				>
-					<Image
-						src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${proj.attributes.image.data?.attributes.url}`}
-						width={proj.attributes.image.data.attributes.width}
-						height={proj.attributes.image.data.attributes.height}
-						alt={proj.attributes.image.data?.attributes.alternativeText} />
 					<a
 						href={`/projects/${proj.attributes.slug}`}
+						style={{
+							alignItems: "center",
+							display: "flex",
+							flexDirection: "column",
+							textDecoration: "none"
+						}}
 					>
-						{proj.attributes.title}
+						<Image
+							src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${proj.attributes.image.data?.attributes.url}`}
+							width={proj.attributes.image.data.attributes.width}
+							height={proj.attributes.image.data.attributes.height}
+							alt={proj.attributes.image.data?.attributes.alternativeText}
+						/>
+						<h3 style={{ borderTop: "1px solid gray" }}>{proj.attributes.title}</h3>
 					</a>
 				</li>
 			);
