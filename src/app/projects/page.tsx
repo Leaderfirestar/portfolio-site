@@ -1,3 +1,4 @@
+import styles from "./page.module.css";
 import { Project } from "@/lib/defintions";
 import { fetchProjectPage } from "@/lib/projectPage";
 import { fetchProjects } from "@/lib/projects";
@@ -8,11 +9,11 @@ async function Projects() {
 	const finalProjectListElements = buildProjectList(projects);
 	return (
 		<div>
-			<div style={{ display: "flex", flexDirection: "column", textAlign: "center" }}>
+			<div className={styles.titleContainer}>
 				<h1>{projectPage.attributes.name}</h1>
 				<h2>{projectPage.attributes.description}</h2>
 			</div>
-			<ul style={{ padding: "0px", display: "grid", gridTemplateColumns: "30% 30% 30%", columnGap: "5%" }}>
+			<ul className={styles.projectList}>
 				{finalProjectListElements}
 			</ul>
 		</div>
@@ -28,27 +29,21 @@ function buildProjectList(projects: Project[]) {
 			finalProjectListElements.push(
 				<li
 					key={proj.id}
-					style={{
-						listStyleType: "none",
-						backgroundColor: "#01727c"
-					}}
+					className={styles.projectListItem}
 				>
 					<a
 						href={`/projects/${proj.attributes.slug}`}
-						style={{
-							alignItems: "center",
-							display: "flex",
-							flexDirection: "column",
-							textDecoration: "none"
-						}}
+						className={styles.projectListItemAnchor}
 					>
-						<Image
-							src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${proj.attributes.image.data?.attributes.url}`}
-							width={proj.attributes.image.data.attributes.width}
-							height={proj.attributes.image.data.attributes.height}
-							alt={proj.attributes.image.data?.attributes.alternativeText}
-						/>
-						<h3 style={{ borderTop: "1px solid gray" }}>{proj.attributes.title}</h3>
+						<div className={styles.imageContainer}>
+							<Image
+								src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${proj.attributes.image.data?.attributes.url}`}
+								width={proj.attributes.image.data.attributes.width}
+								height={proj.attributes.image.data.attributes.height}
+								alt={proj.attributes.image.data?.attributes.alternativeText}
+							/>
+						</div>
+						<h3 className={styles.projectListItemH3}>{proj.attributes.title}</h3>
 					</a>
 				</li>
 			);
