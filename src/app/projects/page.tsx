@@ -8,8 +8,10 @@ async function Projects() {
 	const finalProjectListElements = buildProjectList(projects);
 	return (
 		<div>
-			<h1>{projectPage.attributes.name}</h1>
-			<h2>{projectPage.attributes.description}</h2>
+			<div style={{ display: "flex", flexDirection: "column", textAlign: "center" }}>
+				<h1>{projectPage.attributes.name}</h1>
+				<h2>{projectPage.attributes.description}</h2>
+			</div>
 			<ul style={{ padding: "0px", display: "grid", gridTemplateColumns: "30% 30% 30%", columnGap: "5%" }}>
 				{finalProjectListElements}
 			</ul>
