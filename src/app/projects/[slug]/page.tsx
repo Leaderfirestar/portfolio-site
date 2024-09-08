@@ -1,3 +1,4 @@
+import styles from "./page.module.css";
 import RichTextRenderer from '@/components/RichTextRenderer';
 import { fetchProjectBySlug } from '@/lib/projects';
 import { Metadata } from 'next';
@@ -54,19 +55,19 @@ async function ProjectPage({ params }: ProjectPageProps) {
 			)}
 			<div>
 				<h2>Technologies Used</h2>
-				<div style={{ display: "flex", flexDirection: "row", overflowX: "auto", columnGap: "5px" }}>
+				<div className={styles.technologyUsedIconContainer}>
 					{project.attributes.technologies.data.map((tech) => (
-						<div key={tech.id} style={{ display: "flex", flexDirection: "column" }}>
+						<div key={tech.id} className={styles.technologyContainer}>
 							<div>
 								<Image
 									src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${tech.attributes.logo?.data?.attributes.url}`}
 									width={96}
 									height={96}
 									alt={tech.attributes.logo?.data?.attributes.alternativeText || ""}
-									style={{ backgroundColor: "#FFF" }}
+									className={styles.technologyImage}
 								/>
 							</div>
-							<span style={{ textAlign: "center" }}>{tech.attributes.name}</span>
+							<span>{tech.attributes.name}</span>
 						</div>
 					))}
 				</div>

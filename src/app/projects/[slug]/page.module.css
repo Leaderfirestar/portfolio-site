@@ -1,0 +1,16 @@
+.technologyUsedIconContainer {
+	display: flex;
+	flex-direction: row;
+	overflow-x: auto;
+	column-gap: 5px;
+}
+
+.technologyContainer {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+
+.technologyImage {
+	background-color: #FFF;
+}
