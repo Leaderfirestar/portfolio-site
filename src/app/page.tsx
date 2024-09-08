@@ -19,7 +19,7 @@ export default async function Home() {
 				<div style={{ display: "flex", flexDirection: "column", width: "50%", height: "400px" }}>
 					<h1>{homepageData.attributes.name} | {homepageData.attributes.jobTitle}</h1>
 					<RichTextRenderer nodes={homepageData.attributes.bio} />
-					<ul style={{ display: "flex", flexDirection: "row", padding: "0px", justifyContent: "space-between", marginTop: "auto", marginBottom: "0px" }}>
+					<ul style={{ display: "flex", flexDirection: "row", padding: "0px", justifyContent: "space-between", marginTop: "auto", marginBottom: "auto" }}>
 						{homepageData.attributes.quotes.data.map((quote) => <li key={quote.id} style={{ listStyleType: "none", maxWidth: "45%" }}>{quote.attributes.value}</li>)}
 					</ul>
 				</div>
@@ -33,7 +33,6 @@ export default async function Home() {
 						priority
 					/>
 				</div>
-
 			</div>
 		</main>
 	);
