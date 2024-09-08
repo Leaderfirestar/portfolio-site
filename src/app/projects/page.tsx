@@ -45,6 +45,9 @@ function buildProjectList(projects: Project[]) {
 						</div>
 						<h3 className={styles.projectListItemH3}>{proj.attributes.title}</h3>
 					</a>
+					<div className={styles.projectInfo}>
+						<p>{proj.attributes.shortDescription}</p>
+					</div>
 				</li>
 			);
 		}

@@ -19,7 +19,6 @@
 
 .projectListItem:hover {
 	background-color: #028793;
-	transition: background-color .5s linear;
 }
 
 .projectListItemAnchor {
@@ -37,6 +36,13 @@
 	border-width: 0px 0px 1px 0px;
 }
 
-.projectListItemH3 {
-	margin-bottom: 20px;	
+.projectInfo {
+	display: none;
+	opacity: 0;
+	text-align: center;
+}
+
+.projectListItem:hover .projectInfo {
+	display: block;
+	opacity: 1;
 }

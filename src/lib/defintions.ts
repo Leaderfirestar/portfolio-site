@@ -60,6 +60,7 @@ export interface Project {
 	attributes: {
 		title: string;
 		description: RichTextNode[];
+		shortDescription: string;
 		slug: string;
 		image: {
 			data: Media | null;
