@@ -1,11 +1,7 @@
 import { Project, StrapiFindResponse, StrapiSingleThingResponse } from "./defintions";
 
 export async function fetchProjects(): Promise<Project[]> {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?populate=*`, {
-		next: {
-			revalidate: 3600
-		}
-	});
+	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?populate=*&sort=sortIndex:asc`);
 	const json = await response.json() as StrapiFindResponse<Project>;
 	if (json.data) return json.data;
 	console.error(json.error);

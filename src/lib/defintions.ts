@@ -72,6 +72,7 @@ export interface Project {
 			data: Technology[];
 		};
 		projectUrl: string;
+		githubUrl: string;
 		sortIndex: number;
 	};
 }
