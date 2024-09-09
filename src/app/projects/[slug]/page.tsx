@@ -18,6 +18,8 @@ export const generateMetadata = async ({ params }: ProjectPageProps): Promise<Me
 	if (!response.data) {
 		if (response.error) return { title: 'Error Loading Project' };
 		return { title: "Project Not Found" };
+	} else if (response.data.length === 0) {
+		return { title: "Project Not Found" };
 	}
 	return {
 		title: response.data[0] ? response.data[0].attributes.title : 'Project Not Found',
