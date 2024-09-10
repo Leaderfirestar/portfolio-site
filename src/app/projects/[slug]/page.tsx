@@ -44,7 +44,19 @@ async function ProjectPage({ params }: ProjectPageProps) {
 	const project = response.data[0];
 	return (
 		<div>
-			<h1>{project.attributes.title}</h1>
+			<div className={styles.titleContainer}>
+				<h1>{project.attributes.title}</h1>
+				{project.attributes.githubUrl && (
+					<a href={project.attributes.githubUrl} className={styles.githubLogo}>
+						<Image
+							width={49}
+							height={48}
+							alt="Github Repository"
+							src={"/github.svg"}
+						/>
+					</a>
+				)}
+			</div>
 			{project.attributes.gallery && project.attributes.gallery?.data?.length > 0 && (
 				<div>
 					<EmblaCarouselComponent slides={project.attributes.gallery.data.map(image => ({
