@@ -54,7 +54,7 @@ async function ProjectPage({ params }: ProjectPageProps) {
 					<h1>{project.attributes.title}</h1>
 				)}
 				{project.attributes.githubUrl && (
-					<a href={project.attributes.githubUrl} className={styles.githubLogo}>
+					<a href={project.attributes.githubUrl} className={styles.githubLogo} target="_blank">
 						<Image
 							width={49}
 							height={48}
