@@ -130,18 +130,22 @@ export interface SingularThing<T> {
 
 export type StrapiSingleThingResponse<T> = StrapiFindThing<T> | StrapiFindThingError;
 
-export interface Homepage {
+export interface PersonalInfo {
 	id: number;
 	attributes: {
 		bio: RichTextNode[];
+		email: string;
+		firstName: string;
+		github: string;
 		jobTitle: string;
-		name: string;
+		linkedin: string;
 		profile: {
 			data: Media;
 		};
 		quotes: {
 			data: Quote[];
 		};
+		lastName: string;
 		createdAt: string;
 		updatedAt: string;
 		publishedAt: string;
