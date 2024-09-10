@@ -1,5 +1,20 @@
+import styles from "./page.module.css";
+
 async function Resume() {
-	return <h1>Resume Page</h1>;
+	return (
+		<div className={styles.container}>
+			<div className={styles.sidebar}></div>
+			<div className={styles.content}></div>
+		</div>
+	);
 }
 
+
+// ________________
+// |   |            |
+// |   |            |
+// |   |            |
+// |   |            |
+// |   |            |
+// |___|____________|
 export default Resume;
