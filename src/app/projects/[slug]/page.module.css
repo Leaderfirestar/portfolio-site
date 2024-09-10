@@ -3,6 +3,16 @@
 	flex-direction: row;
 }
 
+.projectUrl {
+	text-decoration: none;
+	display: flex;
+	flex-direction: row;
+}
+
+.projectTitle {
+	color: #FFDDD2;
+}
+
 .githubLogo {
 	margin-left: 20px;
 }

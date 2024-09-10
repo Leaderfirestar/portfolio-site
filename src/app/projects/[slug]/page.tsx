@@ -45,7 +45,14 @@ async function ProjectPage({ params }: ProjectPageProps) {
 	return (
 		<div>
 			<div className={styles.titleContainer}>
-				<h1>{project.attributes.title}</h1>
+				{project.attributes.projectUrl ? (
+					<a href={project.attributes.projectUrl} className={styles.projectUrl} target="_blank">
+						<h1 className={styles.projectTitle}>{project.attributes.title}</h1>
+						<Image height={24} width={24} src={"/newTab.svg"} alt={`Link to ${project.attributes.title}`} />
+					</a>
+				) : (
+					<h1>{project.attributes.title}</h1>
+				)}
 				{project.attributes.githubUrl && (
 					<a href={project.attributes.githubUrl} className={styles.githubLogo}>
 						<Image
