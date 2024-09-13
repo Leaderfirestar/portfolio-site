@@ -1,13 +1,58 @@
 .container {
-	display: grid;
-	grid-template-columns: 25% 75%;
+	display: flex;
+	flex-direction: column;
 	background-color: #028793;
 }
 
-.sidebar {
-	border: 1px solid black;
+.pageContent {
+	margin-top: 30px;
 }
 
-.content {
-	border: 1px solid black;
+.contentContainer {
+	width: 90%;
+	margin: auto;
+}
+
+.header {
+	text-align: center
+}
+
+.name {
+	border-top: 1px solid #FFDDD2;
+	border-bottom: 1px solid #FFDDD2;
+	padding: 10px 0px 10px 0px;
+}
+
+.subsectionChildrenContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.subsectionMetaContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.subsectionP {
+	margin: 0px;
+}
+
+.degreeName {
+	margin: 0px;
+	font-weight: 800;
+}
+
+.degreeField {
+	margin: 0px;
+	font-style: italic;
+}
+
+.degreeContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	/* margin-top: 5px; */
 }

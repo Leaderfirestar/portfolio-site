@@ -1,49 +1,57 @@
-interface Media {
-	id: number;
-	attributes: {
-		name: string,
-		alternativeText: string,
-		caption: string | null,
-		width: number,
-		height: number,
-		formats?: {
-			thumbnail: {
-				name: string;
-				hash: string;
-				ext: string;
-				mime: string;
-				path: string | null,
-				width: number,
-				height: number,
-				size: number,
-				sizeInBytes: number,
-				url: string;
-			},
-			small: {
-				name: string;
-				hash: string;
-				ext: string;
-				mime: string;
-				path: null,
-				width: number,
-				height: number,
-				size: number,
-				sizeInBytes: number,
-				url: string;
-			};
-		};
-		hash: string,
-		ext: string,
-		mime: string,
-		size: number,
-		url: string,
-		previewUrl: string | null,
-		provider: string,
-		provider_metadata: null,
-		createdAt: string,
-		updatedAt: string;
-	};
+interface StrapiEntityAttributes {
+	createdAt: string;
+	publishedAt: string;
+	updatedAt: string;
 }
+
+interface StrapiEntity<T> {
+	id: number;
+	attributes: T & StrapiEntityAttributes;
+}
+
+interface MediaAttributes {
+	name: string,
+	alternativeText: string,
+	caption: string | null,
+	width: number,
+	height: number,
+	formats?: {
+		thumbnail: {
+			name: string;
+			hash: string;
+			ext: string;
+			mime: string;
+			path: string | null,
+			width: number,
+			height: number,
+			size: number,
+			sizeInBytes: number,
+			url: string;
+		},
+		small: {
+			name: string;
+			hash: string;
+			ext: string;
+			mime: string;
+			path: null,
+			width: number,
+			height: number,
+			size: number,
+			sizeInBytes: number,
+			url: string;
+		};
+	};
+	hash: string,
+	ext: string,
+	mime: string,
+	size: number,
+	url: string,
+	previewUrl: string | null,
+	provider: string,
+	provider_metadata: null,
+}
+
+type Media = StrapiEntity<MediaAttributes>;
 
 export interface RichTextNode {
 	type: string;
@@ -55,37 +63,35 @@ export interface RichTextNode {
 	italic?: boolean;
 }
 
-export interface Project {
-	id: number;
-	attributes: {
-		title: string;
-		description: RichTextNode[];
-		shortDescription: string;
-		slug: string;
-		image: {
-			data: Media | null;
-		};
-		gallery: {
-			data: Media[];
-		};
-		technologies: {
-			data: Technology[];
-		};
-		projectUrl: string;
-		githubUrl: string;
-		sortIndex: number;
+interface ProjectAttributes {
+	title: string;
+	description: RichTextNode[];
+	shortDescription: string;
+	slug: string;
+	image: {
+		data: Media | null;
+	};
+	gallery: {
+		data: Media[];
+	};
+	technologies: {
+		data: Technology[];
+	};
+	projectUrl: string;
+	githubUrl: string;
+	sortIndex: number;
+}
+
+export type Project = StrapiEntity<ProjectAttributes>;
+
+interface TechnologyAttributes {
+	name: string;
+	logo?: {
+		data: Media | null;
 	};
 }
 
-export interface Technology {
-	id: number;
-	attributes: {
-		name: string;
-		logo?: {
-			data: Media | null;
-		};
-	};
-}
+export type Technology = StrapiEntity<TechnologyAttributes>;
 
 interface StrapiFindMeta {
 	page: number;
@@ -130,52 +136,63 @@ export interface SingularThing<T> {
 
 export type StrapiSingleThingResponse<T> = StrapiFindThing<T> | StrapiFindThingError;
 
-export interface PersonalInfo {
-	id: number;
-	attributes: {
-		bio: RichTextNode[];
-		email: string;
-		firstName: string;
-		github: string;
-		jobTitle: string;
-		linkedin: string;
-		profile: {
-			data: Media;
-		};
-		quotes: {
-			data: Quote[];
-		};
-		lastName: string;
-		createdAt: string;
-		updatedAt: string;
-		publishedAt: string;
+export interface PersonalInfoAttributes {
+	address: string;
+	bio: RichTextNode[];
+	city: string;
+	email: string;
+	firstName: string;
+	github: string;
+	jobTitle: string;
+	lastName: string;
+	linkedin: string;
+	phoneNumber: string;
+	profile: {
+		data: Media;
+	};
+	quotes: {
+		data: Quote[];
+	};
+	state: string;
+	zip: string;
+}
+
+export type PersonalInfo = StrapiEntity<PersonalInfoAttributes>;
+
+interface ProjectPageAttributes {
+	name: string;
+	description: string;
+}
+
+export type ProjectPage = StrapiEntity<ProjectPageAttributes>;
+
+interface QuoteAttributes {
+	/**
+	 * Who said the quote
+	 */
+	author: string;
+	/**
+	 * The actual quote text
+	 */
+	value: string;
+}
+
+export type Quote = StrapiEntity<QuoteAttributes>;
+
+interface CollegeAttributes {
+	gpa: string;
+	name: string;
+	degrees: {
+		data: Degree[];
 	};
 }
 
-export interface Projectpage {
-	id: number;
-	attributes: {
-		name: string;
-		description: string;
-		createdAt: string;
-		updatedAt: string;
-		publishedAt: string;
-	};
+export type College = StrapiEntity<CollegeAttributes>;
+
+interface DegreeAttributes {
+	date: string;
+	field: string;
+	title: string;
 }
 
-interface Quote {
-	id: number;
-	attributes: {
-		/**
-		 * Who said the quote
-		 */
-		author: string;
-		/**
-		 * The actual quote text
-		 */
-		value: string;
-		createdAt: string;
-		updatedAt: string;
-		publishedAt: string;
-	};
-}
+type Degree = StrapiEntity<DegreeAttributes>;
