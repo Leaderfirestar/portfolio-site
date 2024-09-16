@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import styles from "./ResumeSubSection.module.css";
 
 interface Props {

@@ -40,6 +40,15 @@
 	margin: 0px;
 }
 
+.subsectionPBold {
+	margin: 0px;
+	font-weight: 800;
+}
+
+.boldSpan {
+	font-weight: 800;
+}
+
 .degreeName {
 	margin: 0px;
 	font-weight: 800;
@@ -55,4 +64,9 @@
 	flex-direction: row;
 	justify-content: space-between;
 	/* margin-top: 5px; */
+}
+
+.projectContainer {
+	display: flex;
+	flex-direction: column;
 }

@@ -64,22 +64,26 @@ export interface RichTextNode {
 }
 
 interface ProjectAttributes {
-	title: string;
 	description: RichTextNode[];
-	shortDescription: string;
-	slug: string;
-	image: {
-		data: Media | null;
-	};
+	endDate: string;
 	gallery: {
 		data: Media[];
 	};
+	githubUrl: string;
+	image: {
+		data: Media | null;
+	};
+	projectUrl: string;
+	resumeDescription: string;
+	shortDescription: string;
+	slogan: string;
+	slug: string;
+	sortIndex: number;
+	startDate: string;
 	technologies: {
 		data: Technology[];
 	};
-	projectUrl: string;
-	githubUrl: string;
-	sortIndex: number;
+	title: string;
 }
 
 export type Project = StrapiEntity<ProjectAttributes>;
@@ -196,3 +200,40 @@ interface DegreeAttributes {
 }
 
 type Degree = StrapiEntity<DegreeAttributes>;
+
+interface ResumeAttributes {
+	colleges: {
+		data: College[];
+	};
+	employers: {
+		data: Employer[];
+	};
+	projects: {
+		data: Project[];
+	};
+	technologies: {
+		data: Technology[];
+	};
+}
+
+export type Resume = StrapiEntity<ResumeAttributes>;
+
+interface EmployerAttributes {
+	name: string;
+	jobTitle: string;
+	startDate: string;
+	endDate: string;
+	location: string;
+	accomplishments: {
+		data: Accomplishment[];
+	};
+}
+
+export type Employer = StrapiEntity<EmployerAttributes>;
+
+interface AccomplishmentAttributes {
+	title: string;
+	value: string;
+}
+
+type Accomplishment = StrapiEntity<AccomplishmentAttributes>;
