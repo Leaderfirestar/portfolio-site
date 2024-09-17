@@ -39,6 +39,12 @@ async function Resume() {
 	);
 }
 
+/**
+ * Given the colleges, creates an array of elements to be used with the ResumeSubSection component
+ * @author Eric Webb <ericawebb2000@yahoo.com>
+ * @param colleges The colleges I want listed on the resume
+ * @returns An array of elements filled with content and styled
+ */
 function assembleCollegeChildren(colleges: College[]): JSX.Element[] {
 	const children: JSX.Element[] = colleges.map((college) => {
 		const degreeChildren: JSX.Element[] = college.attributes.degrees.data.map((degree) => {
@@ -73,6 +79,12 @@ function assembleCollegeChildren(colleges: College[]): JSX.Element[] {
 	return children;
 }
 
+/**
+ * Given the technologies, creates a paragraph listing those skills
+ * @author Eric Webb <ericawebb2000@yahoo.com>
+ * @param technologies The technologies I want listed on my resume
+ * @returns The skills listed out
+ */
 function assembleSkillChild(technologies: Technology[]): JSX.Element[] {
 	let final = "";
 	for (let i = 0; i < technologies.length; i++) {
@@ -81,6 +93,12 @@ function assembleSkillChild(technologies: Technology[]): JSX.Element[] {
 	return [<p key="skill list" className={styles.subsectionP}>{final}</p>];
 }
 
+/**
+ * Given the employers, creates an array of elements to be used with the ResumeSubsection component
+ * @author Eric Webb <ericawebb2000@yahoo.com>
+ * @param employers The employers I want listed on my resume
+ * @returns An array of contentful, styled jsx elements
+ */
 function assembleWorkExperience(employers: Employer[]): JSX.Element[] {
 	const final = [];
 	for (const employer of employers) {
@@ -112,6 +130,12 @@ function assembleWorkExperience(employers: Employer[]): JSX.Element[] {
 	return final;
 }
 
+/**
+ * Given the projects, creates an array of elements to use with the ResumeSubsection component
+ * @author Eric Webb <ericawebb2000@yaoo.com>
+ * @param projects The projects I want listed on my resume
+ * @returns An array of styled, contentful elements
+ */
 function assembleProjectStuff(projects: Project[]): JSX.Element[] {
 	const finalProjects = projects.map((project) => {
 		const options: Intl.DateTimeFormatOptions = {
@@ -158,6 +182,13 @@ function assembleProjectStuff(projects: Project[]): JSX.Element[] {
 	];
 }
 
+/**
+ * Given a date, formats it as described in the options
+ * @author Eric Webb <ericawebb2000@yahoo.com>
+ * @param date A date string, formatted YYYY-MM-DD
+ * @param options The options for how we want to see the date formatted
+ * @returns The formatted date string, provided it could be formatted
+ */
 function assembleDate(date: string, options: Intl.DateTimeFormatOptions): string {
 	if (!date) return date;
 	const dateComponents = date.split("-");
