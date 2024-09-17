@@ -9,6 +9,10 @@ interface StrapiEntity<T> {
 	attributes: T & StrapiEntityAttributes;
 }
 
+interface DataObj<T> {
+	data: T;
+}
+
 interface MediaAttributes {
 	name: string,
 	alternativeText: string,
@@ -66,13 +70,9 @@ export interface RichTextNode {
 interface ProjectAttributes {
 	description: RichTextNode[];
 	endDate: string;
-	gallery: {
-		data: Media[];
-	};
+	gallery: DataObj<Media[]>;
 	githubUrl: string;
-	image: {
-		data: Media | null;
-	};
+	image: DataObj<Media | null>;
 	projectUrl: string;
 	resumeDescription: string;
 	shortDescription: string;
@@ -80,9 +80,7 @@ interface ProjectAttributes {
 	slug: string;
 	sortIndex: number;
 	startDate: string;
-	technologies: {
-		data: Technology[];
-	};
+	technologies: DataObj<Technology[]>;
 	title: string;
 }
 
@@ -90,9 +88,7 @@ export type Project = StrapiEntity<ProjectAttributes>;
 
 interface TechnologyAttributes {
 	name: string;
-	logo?: {
-		data: Media | null;
-	};
+	logo?: DataObj<Media | null>;
 }
 
 export type Technology = StrapiEntity<TechnologyAttributes>;
@@ -151,12 +147,8 @@ export interface PersonalInfoAttributes {
 	lastName: string;
 	linkedin: string;
 	phoneNumber: string;
-	profile: {
-		data: Media;
-	};
-	quotes: {
-		data: Quote[];
-	};
+	profile: DataObj<Media>;
+	quotes: DataObj<Quote[]>;
 	state: string;
 	zip: string;
 }
@@ -186,9 +178,7 @@ export type Quote = StrapiEntity<QuoteAttributes>;
 interface CollegeAttributes {
 	gpa: string;
 	name: string;
-	degrees: {
-		data: Degree[];
-	};
+	degrees: DataObj<Degree[]>;
 }
 
 export type College = StrapiEntity<CollegeAttributes>;
@@ -202,18 +192,10 @@ interface DegreeAttributes {
 type Degree = StrapiEntity<DegreeAttributes>;
 
 interface ResumeAttributes {
-	colleges: {
-		data: College[];
-	};
-	employers: {
-		data: Employer[];
-	};
-	projects: {
-		data: Project[];
-	};
-	technologies: {
-		data: Technology[];
-	};
+	colleges: DataObj<College[]>;
+	employers: DataObj<Employer[]>;
+	projects: DataObj<Project[]>;
+	technologies: DataObj<Technology[]>;
 }
 
 export type Resume = StrapiEntity<ResumeAttributes>;
@@ -224,9 +206,7 @@ interface EmployerAttributes {
 	startDate: string;
 	endDate: string;
 	location: string;
-	accomplishments: {
-		data: Accomplishment[];
-	};
+	accomplishments: DataObj<Accomplishment[]>;
 }
 
 export type Employer = StrapiEntity<EmployerAttributes>;
