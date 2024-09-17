@@ -22,6 +22,12 @@ async function Projects() {
 
 export default Projects;
 
+/**
+ * Given the projects from the database, builds each of them into JSX to be rendered on the page
+ * @author Eric Webb <ericawebb2000@yahoo.com>
+ * @param projects The projects I have published in strapi
+ * @returns The project list elements to render on the page
+ */
 function buildProjectList(projects: Project[]) {
 	const finalProjectListElements = [];
 	for (const proj of projects) {
