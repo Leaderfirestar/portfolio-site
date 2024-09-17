@@ -11,7 +11,7 @@ export async function fetchProjects(): Promise<Project[]> {
 export async function fetchProject(id: string) { }
 
 export async function fetchProjectBySlug(slug: string): Promise<StrapiSingleThingResponse<Project>> {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?filters[slug][$eq]=${slug}&populate[image]=*&populate[gallery]=*&populate[technologies][populate]=logo&populate[technologies][sort]=name:asc`);
+	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?filters[slug][$eq]=${slug}&populate[image]=*&populate[gallery]=*&populate[technologies][populate]=logo&populate[technologies][sort]=name:asc&populate[page_metadatum]=*`);
 	const json = await response.json() as StrapiSingleThingResponse<Project>;
 	return json;
 }

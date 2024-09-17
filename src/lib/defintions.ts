@@ -75,6 +75,7 @@ interface ProjectAttributes {
 	gallery: DataObj<Media[]>;
 	githubUrl: string;
 	image: DataObj<Media | null>;
+	page_metadatum: DataObj<PageMetadata>;
 	projectUrl: string;
 	resumeDescription: string;
 	shortDescription: string;

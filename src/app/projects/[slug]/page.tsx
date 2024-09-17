@@ -21,9 +21,16 @@ export const generateMetadata = async ({ params }: ProjectPageProps): Promise<Me
 	} else if (response.data.length === 0) {
 		return { title: "Project Not Found" };
 	}
-	return {
-		title: response.data[0] ? response.data[0].attributes.title : 'Project Not Found',
+	const keywords: string[] = [];
+	keywords.push(response.data[0].attributes.page_metadatum.data.attributes.creator);
+	for (const tech of response.data[0].attributes.technologies.data) {
+		keywords.push(tech.attributes.name);
+	}
+	const metadata: Metadata = {
+		...response.data[0].attributes.page_metadatum.data.attributes,
+		keywords
 	};
+	return metadata;
 };
 
 const EmblaCarouselComponent = dynamic(() => import("@/components/EmblaCarouselComponent"), {
