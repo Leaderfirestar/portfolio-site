@@ -24,7 +24,7 @@ async function Resume() {
 			<div className={styles.pageContent}>
 				<div className={styles.header}>
 					<h1 className={styles.name}>{fullName}</h1>
-					<p className={styles.contactInfo}>{fullContactInfo} &#8226; <a href={`mailto:${personalInfo.attributes.email}`}>{personalInfo.attributes.email}</a> &#8226; <a href={personalInfo.attributes.github}>{personalInfo.attributes.github}</a></p>
+					<p className={styles.contactInfo}>{fullContactInfo} &#8226; <a href={`mailto:${personalInfo.attributes.email}`} rel="nofollow" target="_blank">{personalInfo.attributes.email}</a> &#8226; <a href={personalInfo.attributes.github} target="_blank" rel="nofollow">{personalInfo.attributes.github}</a></p>
 				</div>
 				<div className={styles.contentContainer}>
 					<ResumeSubSection header="Education">

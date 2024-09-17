@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /github.svg
+Disallow: /newTab.svg
+Disallow: /next.svg
+Disallow: /vercel.svg
