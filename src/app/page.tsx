@@ -6,9 +6,7 @@ import Image from "next/image";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const personalInfo = await fetchPersonalInfo();
-	const metadata: Metadata = {
-		title: `${personalInfo.attributes.firstName} ${personalInfo.attributes.lastName}` || 'Home',
-	};
+	const metadata: Metadata = personalInfo.attributes.page_metadatum.data.attributes;
 	return metadata;
 }
 

@@ -6,7 +6,7 @@ interface QueryResponse {
 }
 
 export async function fetchCollegeInfo(): Promise<College[]> {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/colleges?populate=*`, { cache: "no-store" });
+	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/colleges?populate=*`);
 	if (!response.ok) {
 		throw new Error("Failed to fetch college data");
 	}

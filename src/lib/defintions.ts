@@ -1,3 +1,5 @@
+import { ReferrerEnum } from "next/dist/lib/metadata/types/metadata-types";
+
 interface StrapiEntityAttributes {
 	createdAt: string;
 	publishedAt: string;
@@ -146,6 +148,7 @@ export interface PersonalInfoAttributes {
 	jobTitle: string;
 	lastName: string;
 	linkedin: string;
+	page_metadatum: DataObj<PageMetadata>;
 	phoneNumber: string;
 	profile: DataObj<Media>;
 	quotes: DataObj<Quote[]>;
@@ -158,6 +161,7 @@ export type PersonalInfo = StrapiEntity<PersonalInfoAttributes>;
 interface ProjectPageAttributes {
 	name: string;
 	description: string;
+	page_metadatum: DataObj<PageMetadata>;
 }
 
 export type ProjectPage = StrapiEntity<ProjectPageAttributes>;
@@ -194,6 +198,7 @@ type Degree = StrapiEntity<DegreeAttributes>;
 interface ResumeAttributes {
 	colleges: DataObj<College[]>;
 	employers: DataObj<Employer[]>;
+	page_metadatum: DataObj<PageMetadata>;
 	projects: DataObj<Project[]>;
 	technologies: DataObj<Technology[]>;
 }
@@ -217,3 +222,15 @@ interface AccomplishmentAttributes {
 }
 
 type Accomplishment = StrapiEntity<AccomplishmentAttributes>;
+
+interface PageMetadataAttributes {
+	applicationName: string;
+	creator: string;
+	description: string;
+	keywords: string;
+	publisher: string;
+	referrer: ReferrerEnum;
+	title: string;
+};
+
+export type PageMetadata = StrapiEntity<PageMetadataAttributes>;

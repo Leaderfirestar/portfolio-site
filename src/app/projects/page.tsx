@@ -2,7 +2,13 @@ import styles from "./page.module.css";
 import { Project } from "@/lib/defintions";
 import { fetchProjectPage } from "@/lib/projectPage";
 import { fetchProjects } from "@/lib/projects";
+import { Metadata } from "next";
 import Image from "next/image";
+
+export async function generateMetadata(): Promise<Metadata> {
+	const projectPage = await fetchProjectPage();
+	return projectPage.attributes.page_metadatum.data.attributes;
+}
 
 async function Projects() {
 	const [projects, projectPage] = await Promise.all([fetchProjects(), fetchProjectPage()]);

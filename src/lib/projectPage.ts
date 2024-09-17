@@ -1,12 +1,12 @@
-import { Projectpage } from "./defintions";
+import { ProjectPage } from "./defintions";
 
 interface QueryResponse {
-	data: Projectpage;
+	data: ProjectPage;
 	meta: {};
 }
 
-export async function fetchProjectPage() {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projectpage`);
+export async function fetchProjectPage(): Promise<ProjectPage> {
+	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projectpage?populate[page_metadatum]=*`);
 	if (!response.ok) {
 		throw new Error('Failed to fetch homepage data');
 	}

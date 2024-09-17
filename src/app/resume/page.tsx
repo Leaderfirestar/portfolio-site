@@ -3,6 +3,12 @@ import { College, Employer, Project, Technology } from "@/lib/defintions";
 import { fetchPersonalInfo } from "@/lib/personalInfo";
 import { fetchResume } from "@/lib/resume";
 import styles from "./page.module.css";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+	const resume = await fetchResume();
+	return resume.attributes.page_metadatum.data.attributes;
+}
 
 async function Resume() {
 	const [personalInfo, resume] = await Promise.all([fetchPersonalInfo(), fetchResume()]);
