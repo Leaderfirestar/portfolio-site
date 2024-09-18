@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import RichTextRenderer from '@/components/RichTextRenderer';
-import { fetchProjectBySlug } from '@/lib/projects';
-import { Metadata } from 'next';
+import { fetchProjectBySlug, fetchProjectsForBuildTimeGeneration } from '@/lib/projects';
+import { GetServerSideProps, GetServerSidePropsContext, Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
@@ -31,6 +31,15 @@ export const generateMetadata = async ({ params }: ProjectPageProps): Promise<Me
 		keywords
 	};
 	return metadata;
+};
+
+export async function generateStaticParams() {
+	const projects = await fetchProjectsForBuildTimeGeneration();
+	return projects.map((proj) => {
+		return {
+			slug: proj.attributes.slug
+		};
+	});
 };
 
 const EmblaCarouselComponent = dynamic(() => import("@/components/EmblaCarouselComponent"), {
