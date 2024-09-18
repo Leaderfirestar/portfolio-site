@@ -33,6 +33,11 @@ export const generateMetadata = async ({ params }: ProjectPageProps): Promise<Me
 	return metadata;
 };
 
+/**
+ * Fetches all projects and returns the values of what goes in the url so nextjs can SSG it
+ * @author Eric Webb <ericawebb2000@yahoo.com>
+ * @returns The slugs (url parameters) for the projects
+ */
 export async function generateStaticParams() {
 	const projects = await fetchProjectsForBuildTimeGeneration();
 	return projects.map((proj) => {
