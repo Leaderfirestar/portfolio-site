@@ -5,6 +5,11 @@ interface QueryResponse {
 	meta: {};
 }
 
+/**
+ * Fetches all data related to the project page from the db
+ * @author Eric Webb <ericawebb2000@yahoo.com>
+ * @returns The project page data
+ */
 export async function fetchProjectPage(): Promise<ProjectPage> {
 	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projectpage?populate[page_metadatum]=*`);
 	if (!response.ok) {

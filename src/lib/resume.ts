@@ -5,6 +5,11 @@ interface QueryResponse {
 	meta: {};
 }
 
+/**
+ * Fetches all data related to the resume from the db
+ * @author Eric Webb <ericawebb2000@yahoo.com>
+ * @returns The resume data and all related documents
+ */
 export async function fetchResume(): Promise<Resume> {
 	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/resume?populate[colleges][populate]=*&populate[employers][populate]=*&populate[technologies]=*&populate[projects]=*&populate[page_metadatum]=*`);
 	if (!response.ok) {

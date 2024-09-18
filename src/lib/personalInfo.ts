@@ -5,6 +5,11 @@ interface QueryResponse {
 	meta: {};
 }
 
+/**
+ * Fetches personalInfo and all related documents from the database
+ * @author Eric Webb <ericawebb2000@yahoo.com>
+ * @returns All personal info and related documents
+ */
 export async function fetchPersonalInfo(): Promise<PersonalInfo> {
 	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/personal-info?populate=*`);
 	if (!response.ok) {
