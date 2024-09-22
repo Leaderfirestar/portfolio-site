@@ -25,11 +25,23 @@
 .profileContainer {
 	display: flex;
 	flex-direction: column;
-	height: 400px;
 }
 
 .profile {
 	align-self: flex-end;
+}
+
+/* Phones */
+
+@media only screen and (max-width: 480px) {
+	.container {
+		display: flex;
+		flex-direction: column;
+	}
+	.profile {
+		width: 300px;
+		height: 200px
+	}
 }
 
 /* Layout.tsx */

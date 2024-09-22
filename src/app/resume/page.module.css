@@ -69,3 +69,15 @@
 	display: flex;
 	flex-direction: column;
 }
+
+/* Phones */
+
+@media only screen and (max-width: 480px) {
+	.subsectionMetaContainer {
+		flex-direction: column;
+	}
+	.degreeContainer {
+		margin-top: 20px;
+		flex-direction: column;
+	}
+}

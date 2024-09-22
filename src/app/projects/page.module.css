@@ -40,3 +40,14 @@
 .projectInfo {
 	text-align: center;
 }
+
+/* Phones */
+
+@media only screen and (max-width: 480px) {
+	.projectList {
+		padding: 0px;
+		display: grid;
+		grid-template-columns: 100%;
+		row-gap: 5px;
+	}
+}
