@@ -22,10 +22,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 				</nav>
 				{children}
 				<footer className={styles.contactInfoContainer}>
-					<p className={styles.contactParagraph}>{personalInfo.attributes.firstName} {personalInfo.attributes.lastName}</p>
-					<p className={styles.contactParagraph}><a href={`mailto:${personalInfo.attributes.email}`}>{personalInfo.attributes.email}</a></p>
+					<p className={styles.contactParagraph}>{personalInfo.firstName} {personalInfo.lastName}</p>
+					<p className={styles.contactParagraph}><a href={`mailto:${personalInfo.email}`}>{personalInfo.email}</a></p>
 					<div className={styles.iconContainer}>
-						<a href={personalInfo.attributes.github} target="_blank" rel="nofollow"><Image width={49} height={48} src={"/github.svg"} alt={`Github repository for ${personalInfo.attributes.firstName} ${personalInfo.attributes.lastName}`} /></a>
+						<a href={personalInfo.github} target="_blank" rel="nofollow"><Image width={49} height={48} src={"/github.svg"} alt={`Github repository for ${personalInfo.firstName} ${personalInfo.lastName}`} /></a>
 					</div>
 				</footer>
 			</body>

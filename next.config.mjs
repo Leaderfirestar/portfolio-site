@@ -3,9 +3,9 @@ const nextConfig = {
 	images: {
 		remotePatterns: [
 			{
-				protocol: 'http',
-				hostname: 'localhost',
-				port: '1337', // The port Strapi is running on
+				protocol: 'https',
+				hostname: 'portfolio-api.eric-webb.dev',
+				port: '', // The port Strapi is running on
 				pathname: '/uploads/**', // Path pattern for Strapi images
 			}
 		]

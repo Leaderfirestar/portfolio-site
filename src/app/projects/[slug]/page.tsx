@@ -22,12 +22,12 @@ export const generateMetadata = async ({ params }: ProjectPageProps): Promise<Me
 		return { title: "Project Not Found" };
 	}
 	const keywords: string[] = [];
-	keywords.push(response.data[0].attributes.page_metadatum.data.attributes.creator);
-	for (const tech of response.data[0].attributes.technologies.data) {
-		keywords.push(tech.attributes.name);
+	keywords.push(response.data[0].page_metadata.creator);
+	for (const tech of response.data[0].technologies) {
+		keywords.push(tech.name);
 	}
 	const metadata: Metadata = {
-		...response.data[0].attributes.page_metadatum.data.attributes,
+		...response.data[0].page_metadata,
 		keywords
 	};
 	return metadata;
@@ -42,7 +42,7 @@ export async function generateStaticParams() {
 	const projects = await fetchProjectsForBuildTimeGeneration();
 	return projects.map((proj) => {
 		return {
-			slug: proj.attributes.slug
+			slug: proj.slug
 		};
 	});
 };
@@ -66,16 +66,16 @@ async function ProjectPage({ params }: ProjectPageProps) {
 	return (
 		<div>
 			<div className={styles.titleContainer}>
-				{project.attributes.projectUrl ? (
-					<a href={project.attributes.projectUrl} className={styles.projectUrl} target="_blank">
-						<h1 className={styles.projectTitle}>{project.attributes.title}</h1>
-						<Image height={24} width={24} src={"/newTab.svg"} alt={`Link to ${project.attributes.title}`} />
+				{project.projectUrl ? (
+					<a href={project.projectUrl} className={styles.projectUrl} target="_blank">
+						<h1 className={styles.projectTitle}>{project.title}</h1>
+						<Image height={24} width={24} src={"/newTab.svg"} alt={`Link to ${project.title}`} />
 					</a>
 				) : (
-					<h1>{project.attributes.title}</h1>
+					<h1>{project.title}</h1>
 				)}
-				{project.attributes.githubUrl && (
-					<a href={project.attributes.githubUrl} className={styles.githubLogo} target="_blank" rel="nofollow">
+				{project.githubUrl && (
+					<a href={project.githubUrl} className={styles.githubLogo} target="_blank" rel="nofollow">
 						<Image
 							width={49}
 							height={48}
@@ -85,12 +85,12 @@ async function ProjectPage({ params }: ProjectPageProps) {
 					</a>
 				)}
 			</div>
-			{project.attributes.gallery && project.attributes.gallery?.data?.length > 0 && (
+			{project.gallery && project.gallery?.length > 0 && (
 				<div>
-					<EmblaCarouselComponent slides={project.attributes.gallery.data.map(image => ({
+					<EmblaCarouselComponent slides={project.gallery.map(image => ({
 						id: image.id,
-						url: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${image.attributes.url}`,
-						alt: image.attributes.alternativeText || ''
+						url: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${image.url}`,
+						alt: image.alternativeText || ''
 					})) || []}
 					/>
 				</div>
@@ -98,23 +98,23 @@ async function ProjectPage({ params }: ProjectPageProps) {
 			<div>
 				<h2>Technologies Used</h2>
 				<div className={styles.technologyUsedIconContainer}>
-					{project.attributes.technologies.data.map((tech) => (
+					{project.technologies.map((tech) => (
 						<div key={tech.id} className={styles.technologyContainer}>
 							<div>
 								<Image
-									src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${tech.attributes.logo?.data?.attributes.url}`}
+									src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${tech.logo?.url}`}
 									width={96}
 									height={96}
-									alt={tech.attributes.logo?.data?.attributes.alternativeText || ""}
+									alt={tech.logo?.alternativeText || ""}
 									className={styles.technologyImage}
 								/>
 							</div>
-							<span>{tech.attributes.name}</span>
+							<span>{tech.name}</span>
 						</div>
 					))}
 				</div>
 			</div>
-			<RichTextRenderer nodes={project.attributes.description} />
+			<RichTextRenderer nodes={project.description} />
 		</div>
 	);
 };

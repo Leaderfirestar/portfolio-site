@@ -1,21 +1,13 @@
 import { ReferrerEnum } from "next/dist/lib/metadata/types/metadata-types";
 
-interface StrapiEntityAttributes {
+interface StrapiEntity {
+	id: number;
 	createdAt: string;
 	publishedAt: string;
 	updatedAt: string;
 }
 
-interface StrapiEntity<T> {
-	id: number;
-	attributes: T & StrapiEntityAttributes;
-}
-
-interface DataObj<T> {
-	data: T;
-}
-
-interface MediaAttributes {
+interface Media extends StrapiEntity {
 	name: string,
 	alternativeText: string,
 	caption: string | null,
@@ -57,8 +49,6 @@ interface MediaAttributes {
 	provider_metadata: null,
 }
 
-type Media = StrapiEntity<MediaAttributes>;
-
 export interface RichTextNode {
 	type: string;
 	children?: RichTextNode[];
@@ -69,13 +59,13 @@ export interface RichTextNode {
 	italic?: boolean;
 }
 
-interface ProjectAttributes {
+export interface Project extends StrapiEntity {
 	description: RichTextNode[];
 	endDate: string;
-	gallery: DataObj<Media[]>;
+	gallery: Media[];
 	githubUrl: string;
-	image: DataObj<Media | null>;
-	page_metadatum: DataObj<PageMetadata>;
+	image: Media | null;
+	page_metadata: PageMetadata;
 	projectUrl: string;
 	resumeDescription: string;
 	shortDescription: string;
@@ -83,18 +73,14 @@ interface ProjectAttributes {
 	slug: string;
 	sortIndex: number;
 	startDate: string;
-	technologies: DataObj<Technology[]>;
+	technologies: Technology[];
 	title: string;
 }
 
-export type Project = StrapiEntity<ProjectAttributes>;
-
-interface TechnologyAttributes {
+export interface Technology extends StrapiEntity {
 	name: string;
-	logo?: DataObj<Media | null>;
+	logo?: Media | null;
 }
-
-export type Technology = StrapiEntity<TechnologyAttributes>;
 
 interface StrapiFindMeta {
 	page: number;
@@ -139,7 +125,7 @@ export interface SingularThing<T> {
 
 export type StrapiSingleThingResponse<T> = StrapiFindThing<T> | StrapiFindThingError;
 
-export interface PersonalInfoAttributes {
+export interface PersonalInfo extends StrapiEntity {
 	address: string;
 	bio: RichTextNode[];
 	city: string;
@@ -149,25 +135,21 @@ export interface PersonalInfoAttributes {
 	jobTitle: string;
 	lastName: string;
 	linkedin: string;
-	page_metadatum: DataObj<PageMetadata>;
+	page_metadata: PageMetadata;
 	phoneNumber: string;
-	profile: DataObj<Media>;
-	quotes: DataObj<Quote[]>;
+	profile: Media;
+	quotes: Quote[];
 	state: string;
 	zip: string;
 }
 
-export type PersonalInfo = StrapiEntity<PersonalInfoAttributes>;
-
-interface ProjectPageAttributes {
+export interface ProjectPage extends StrapiEntity {
 	name: string;
 	description: string;
-	page_metadatum: DataObj<PageMetadata>;
+	page_metadata: PageMetadata;
 }
 
-export type ProjectPage = StrapiEntity<ProjectPageAttributes>;
-
-interface QuoteAttributes {
+interface Quote extends StrapiEntity {
 	/**
 	 * Who said the quote
 	 */
@@ -176,55 +158,44 @@ interface QuoteAttributes {
 	 * The actual quote text
 	 */
 	value: string;
+	title: string;
 }
 
-export type Quote = StrapiEntity<QuoteAttributes>;
-
-interface CollegeAttributes {
-	gpa: string;
+export interface College extends StrapiEntity {
+	gpa: number;
 	name: string;
-	degrees: DataObj<Degree[]>;
+	degrees: Degree[];
 }
 
-export type College = StrapiEntity<CollegeAttributes>;
-
-interface DegreeAttributes {
+interface Degree extends StrapiEntity {
 	date: string;
 	field: string;
 	title: string;
 }
 
-type Degree = StrapiEntity<DegreeAttributes>;
-
-interface ResumeAttributes {
-	colleges: DataObj<College[]>;
-	employers: DataObj<Employer[]>;
-	page_metadatum: DataObj<PageMetadata>;
-	projects: DataObj<Project[]>;
-	technologies: DataObj<Technology[]>;
+export interface Resume extends StrapiEntity {
+	colleges: College[];
+	employers: Employer[];
+	page_metadata: PageMetadata;
+	projects: Project[];
+	technologies: Technology[];
 }
 
-export type Resume = StrapiEntity<ResumeAttributes>;
-
-interface EmployerAttributes {
+export interface Employer extends StrapiEntity {
 	name: string;
 	jobTitle: string;
 	startDate: string;
 	endDate: string;
 	location: string;
-	accomplishments: DataObj<Accomplishment[]>;
+	accomplishments: Accomplishment[];
 }
 
-export type Employer = StrapiEntity<EmployerAttributes>;
-
-interface AccomplishmentAttributes {
+interface Accomplishment extends StrapiEntity {
 	title: string;
 	value: string;
 }
 
-type Accomplishment = StrapiEntity<AccomplishmentAttributes>;
-
-interface PageMetadataAttributes {
+export interface PageMetadata extends StrapiEntity {
 	applicationName: string;
 	creator: string;
 	description: string;
@@ -233,5 +204,3 @@ interface PageMetadataAttributes {
 	referrer: ReferrerEnum;
 	title: string;
 };
-
-export type PageMetadata = StrapiEntity<PageMetadataAttributes>;

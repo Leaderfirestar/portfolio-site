@@ -11,7 +11,7 @@ interface QueryResponse {
  * @returns The resume data and all related documents
  */
 export async function fetchResume(): Promise<Resume> {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/resume?populate[colleges][populate]=*&populate[employers][populate]=*&populate[technologies]=*&populate[projects]=*&populate[page_metadatum]=*`);
+	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/resume?populate[colleges][populate]=*&populate[employers][populate]=*&populate[technologies]=*&populate[projects]=*&populate[page_metadata]=*`);
 	if (!response.ok) {
 		throw new Error('Failed to fetch resume data');
 	}

@@ -8,8 +8,6 @@
 .textContainer {
 	display: flex;
 	flex-direction: column;
-	width: 50%;
-	height: 400px;
 }
 
 .quoteList {
@@ -29,7 +27,6 @@
 .profileContainer {
 	display: flex;
 	flex-direction: column;
-	width: 50%;
 	height: 400px;
 }
 

@@ -7,24 +7,24 @@ import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const resume = await fetchResume();
-	return resume.attributes.page_metadatum.data.attributes;
+	return resume.page_metadata;
 }
 
 async function Resume() {
 	const [personalInfo, resume] = await Promise.all([fetchPersonalInfo(), fetchResume()]);
-	const fullAddress = `${personalInfo.attributes.address}, ${personalInfo.attributes.city}, ${personalInfo.attributes.state}, ${personalInfo.attributes.zip}`;
-	const fullName = `${personalInfo.attributes.firstName} ${personalInfo.attributes.lastName}`.toUpperCase();
-	const fullContactInfo = `${personalInfo.attributes.phoneNumber} \u2022 ${fullAddress}`;
-	const collegeChildren = assembleCollegeChildren(resume.attributes.colleges.data);
-	const skillChild = assembleSkillChild(resume.attributes.technologies.data);
-	const workChildren = assembleWorkExperience(resume.attributes.employers.data);
-	const projectChildren = assembleProjectStuff(resume.attributes.projects.data);
+	const fullAddress = `${personalInfo.address}, ${personalInfo.city}, ${personalInfo.state}, ${personalInfo.zip}`;
+	const fullName = `${personalInfo.firstName} ${personalInfo.lastName}`.toUpperCase();
+	const fullContactInfo = `${personalInfo.phoneNumber} \u2022 ${fullAddress}`;
+	const collegeChildren = assembleCollegeChildren(resume.colleges);
+	const skillChild = assembleSkillChild(resume.technologies);
+	const workChildren = assembleWorkExperience(resume.employers);
+	const projectChildren = assembleProjectStuff(resume.projects);
 	return (
 		<div className={styles.container}>
 			<div className={styles.pageContent}>
 				<div className={styles.header}>
 					<h1 className={styles.name}>{fullName}</h1>
-					<p className={styles.contactInfo}>{fullContactInfo} &#8226; <a href={`mailto:${personalInfo.attributes.email}`} rel="nofollow" target="_blank">{personalInfo.attributes.email}</a> &#8226; <a href={personalInfo.attributes.github} target="_blank" rel="nofollow">{personalInfo.attributes.github}</a></p>
+					<p className={styles.contactInfo}>{fullContactInfo} &#8226; <a href={`mailto:${personalInfo.email}`} rel="nofollow" target="_blank">{personalInfo.email}</a> &#8226; <a href={personalInfo.github} target="_blank" rel="nofollow">{personalInfo.github}</a></p>
 				</div>
 				<div className={styles.contentContainer}>
 					<ResumeSubSection header="Education">
@@ -53,18 +53,18 @@ async function Resume() {
  */
 function assembleCollegeChildren(colleges: College[]): JSX.Element[] {
 	const children: JSX.Element[] = colleges.map((college) => {
-		const degreeChildren: JSX.Element[] = college.attributes.degrees.data.map((degree) => {
+		const degreeChildren: JSX.Element[] = college.degrees.map((degree) => {
 			const options: Intl.DateTimeFormatOptions = {
 				month: "short",
 				day: "numeric",
 				year: "numeric"
 			};
-			const dateString = assembleDate(degree.attributes.date, options);
+			const dateString = assembleDate(degree.date, options);
 			return (
-				<div key={degree.attributes.title} className={styles.degreeContainer}>
+				<div key={degree.title} className={styles.degreeContainer}>
 					<div className={styles.degreeHeader}>
-						<p className={styles.degreeName}>{degree.attributes.title}</p>
-						<p className={styles.degreeField}>{degree.attributes.field}</p>
+						<p className={styles.degreeName}>{degree.title}</p>
+						<p className={styles.degreeField}>{degree.field}</p>
 					</div>
 					<div>
 						<p className={styles.subsectionP}>{dateString}</p>
@@ -75,8 +75,8 @@ function assembleCollegeChildren(colleges: College[]): JSX.Element[] {
 		return (
 			<div key={college.id} className={styles.subsectionChildrenContainer}>
 				<div className={styles.subsectionMetaContainer}>
-					<p className={styles.subsectionP}>{college.attributes.name}</p>
-					<p className={styles.subsectionP}>GPA: {college.attributes.gpa}</p>
+					<p className={styles.subsectionP}>{college.name}</p>
+					<p className={styles.subsectionP}>GPA: {college.gpa}</p>
 				</div>
 				{degreeChildren}
 			</div>
@@ -94,7 +94,7 @@ function assembleCollegeChildren(colleges: College[]): JSX.Element[] {
 function assembleSkillChild(technologies: Technology[]): JSX.Element[] {
 	let final = "";
 	for (let i = 0; i < technologies.length; i++) {
-		final += i === technologies.length - 1 ? technologies[i].attributes.name : `${technologies[i].attributes.name}, `;
+		final += i === technologies.length - 1 ? technologies[i].name : `${technologies[i].name}, `;
 	}
 	return [<p key="skill list" className={styles.subsectionP}>{final}</p>];
 }
@@ -113,19 +113,19 @@ function assembleWorkExperience(employers: Employer[]): JSX.Element[] {
 			month: "short",
 			year: "numeric"
 		};
-		const startDate = assembleDate(employer.attributes.startDate, options);
-		const endDate = assembleDate(employer.attributes.endDate, options);
-		const accomplishmentList: JSX.Element[] = employer.attributes.accomplishments.data.map((accomplishment) => {
-			return <li key={`Accomplishment - ${accomplishment.id}`}>{accomplishment.attributes.value}</li>;
+		const startDate = assembleDate(employer.startDate, options);
+		const endDate = assembleDate(employer.endDate, options);
+		const accomplishmentList: JSX.Element[] = employer.accomplishments.map((accomplishment) => {
+			return <li key={`Accomplishment - ${accomplishment.id}`}>{accomplishment.value}</li>;
 		});
 		final.push(
 			<div key={`Employer - ${employer.id}`} className={styles.subsectionChildrenContainer}>
 				<div className={styles.subsectionMetaContainer}>
-					<p className={styles.subsectionP}>{employer.attributes.name}, {employer.attributes.location}</p>
+					<p className={styles.subsectionP}>{employer.name}, {employer.location}</p>
 					<p className={styles.subsectionP}>{startDate} - {endDate || "Present"}</p>
 				</div>
 				<div className={styles.subsectionMetaContainer}>
-					<p className={styles.subsectionPBold}>{employer.attributes.jobTitle}</p>
+					<p className={styles.subsectionPBold}>{employer.jobTitle}</p>
 				</div>
 				<ul>
 					{accomplishmentList}
@@ -148,8 +148,8 @@ function assembleProjectStuff(projects: Project[]): JSX.Element[] {
 			month: "short",
 			year: "numeric"
 		};
-		const startDate = assembleDate(project.attributes.startDate, options);
-		const endDate = assembleDate(project.attributes.endDate, options);
+		const startDate = assembleDate(project.startDate, options);
+		const endDate = assembleDate(project.endDate, options);
 		let dateString = "";
 		if (startDate && endDate) {
 			dateString = `${startDate} - ${endDate}`;
@@ -165,10 +165,10 @@ function assembleProjectStuff(projects: Project[]): JSX.Element[] {
 				<div className={styles.degreeContainer}>
 					<p className={styles.subsectionP}>
 						<span className={styles.boldSpan}>
-							{project.attributes.title},&nbsp;
+							{project.title},&nbsp;
 						</span>
 						<span>
-							{project.attributes.slogan}
+							{project.slogan}
 						</span>
 					</p>
 					<p className={styles.subsectionP}>
@@ -176,7 +176,7 @@ function assembleProjectStuff(projects: Project[]): JSX.Element[] {
 					</p>
 				</div>
 				<ul>
-					<li key={`Project-${project.id}-description`}>{project.attributes.resumeDescription}</li>
+					<li key={`Project-${project.id}-description`}>{project.resumeDescription}</li>
 				</ul>
 			</div>
 		);

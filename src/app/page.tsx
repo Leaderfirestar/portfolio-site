@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const personalInfo = await fetchPersonalInfo();
-	const metadata: Metadata = personalInfo.attributes.page_metadatum.data.attributes;
+	const metadata: Metadata = personalInfo.page_metadata;
 	return metadata;
 }
 
@@ -16,22 +16,24 @@ export default async function Home() {
 		<main>
 			<div className={styles.container}>
 				<div className={styles.textContainer}>
-					<h1>{personalInfo.attributes.firstName} {personalInfo.attributes.lastName} | {personalInfo.attributes.jobTitle}</h1>
-					<RichTextRenderer nodes={personalInfo.attributes.bio} />
+					<h1>{personalInfo.firstName} {personalInfo.lastName} | {personalInfo.jobTitle}</h1>
+					<RichTextRenderer nodes={personalInfo.bio} />
 					<ul className={styles.quoteList}>
-						{personalInfo.attributes.quotes.data.map((quote) => <li key={quote.id} className={styles.quoteListItem}>{quote.attributes.value}</li>)}
+						{personalInfo.quotes.map((quote) => <li key={quote.id} className={styles.quoteListItem}>{quote.value}</li>)}
 					</ul>
 				</div>
-				<div className={styles.profileContainer}>
-					<Image
-						src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${personalInfo.attributes.profile.data.attributes.url}`}
-						alt={personalInfo.attributes.profile.data.attributes.alternativeText}
-						width={300}
-						height={400}
-						className={styles.profile}
-						priority
-					/>
-				</div>
+				{personalInfo.profile?.url && (
+					<div className={styles.profileContainer}>
+						<Image
+							src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${personalInfo.profile.url}`}
+							alt={personalInfo.profile.alternativeText}
+							width={450}
+							height={300}
+							className={styles.profile}
+							priority
+						/>
+					</div>
+				)}
 			</div>
 		</main>
 	);

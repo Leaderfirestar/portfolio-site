@@ -11,9 +11,9 @@ interface QueryResponse {
  * @returns The project page data
  */
 export async function fetchProjectPage(): Promise<ProjectPage> {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projectpage?populate[page_metadatum]=*`);
+	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/project-page?populate[page_metadata]=*`);
 	if (!response.ok) {
-		throw new Error('Failed to fetch homepage data');
+		throw new Error('Failed to fetch project page data');
 	}
 
 	const json = await response.json() as QueryResponse;
