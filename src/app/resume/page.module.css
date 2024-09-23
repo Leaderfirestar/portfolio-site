@@ -17,10 +17,14 @@
 	text-align: center
 }
 
-.name {
+.nameContainer {
 	border-top: 1px solid #FFDDD2;
 	border-bottom: 1px solid #FFDDD2;
 	padding: 10px 0px 10px 0px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
 }
 
 .subsectionChildrenContainer {

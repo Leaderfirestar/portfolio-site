@@ -4,6 +4,7 @@ import { fetchPersonalInfo } from "@/lib/personalInfo";
 import { fetchResume } from "@/lib/resume";
 import styles from "./page.module.css";
 import { Metadata } from "next";
+import DownloadButton from "@/components/DownloadButton";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const resume = await fetchResume();
@@ -23,7 +24,10 @@ async function Resume() {
 		<div className={styles.container}>
 			<div className={styles.pageContent}>
 				<div className={styles.header}>
-					<h1 className={styles.name}>{fullName}</h1>
+					<div className={styles.nameContainer}>
+						<h1 className={styles.name}>{fullName}</h1>
+						<DownloadButton media={resume.resume} classname={styles.downloadButton} />
+					</div>
 					<p className={styles.contactInfo}>{fullContactInfo} &#8226; <a href={`mailto:${personalInfo.email}`} rel="nofollow" target="_blank">{personalInfo.email}</a> &#8226; <a href={personalInfo.github} target="_blank" rel="nofollow">{personalInfo.github}</a></p>
 				</div>
 				<div className={styles.contentContainer}>

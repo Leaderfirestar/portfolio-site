@@ -7,7 +7,7 @@ interface StrapiEntity {
 	updatedAt: string;
 }
 
-interface Media extends StrapiEntity {
+export interface Media extends StrapiEntity {
 	name: string,
 	alternativeText: string,
 	caption: string | null,
@@ -178,6 +178,7 @@ export interface Resume extends StrapiEntity {
 	employers: Employer[];
 	page_metadata: PageMetadata;
 	projects: Project[];
+	resume: Media;
 	technologies: Technology[];
 }
 
