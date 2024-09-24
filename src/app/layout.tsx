@@ -25,7 +25,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 					<p className={styles.contactParagraph}>{personalInfo.firstName} {personalInfo.lastName}</p>
 					<p className={styles.contactParagraph}><a href={`mailto:${personalInfo.email}`}>{personalInfo.email}</a></p>
 					<div className={styles.iconContainer}>
-						<a href={personalInfo.github} target="_blank" rel="nofollow"><Image width={49} height={48} src={"/github.svg"} alt={`Github repository for ${personalInfo.firstName} ${personalInfo.lastName}`} /></a>
+						<a href={personalInfo.github} target="_blank" rel="nofollow"><Image width={49} height={48} src={"/github.svg"} alt={`${personalInfo.firstName} ${personalInfo.lastName}'s github`} /></a>
+						<a href={personalInfo.linkedin} target="_blank" rel="nofollow"><Image width={49} height={49} src={"/linkedin.webp"} alt={`${personalInfo.firstName} ${personalInfo.lastName}'s linkedin`} /></a>
 					</div>
 				</footer>
 			</body>
