@@ -15,7 +15,6 @@ async function Resume() {
 	const [personalInfo, resume] = await Promise.all([fetchPersonalInfo(), fetchResume()]);
 	const fullAddress = `${personalInfo.address}, ${personalInfo.city}, ${personalInfo.state}, ${personalInfo.zip}`;
 	const fullName = `${personalInfo.firstName} ${personalInfo.lastName}`.toUpperCase();
-	const fullContactInfo = `${personalInfo.phoneNumber} \u2022 ${fullAddress}`;
 	const collegeChildren = assembleCollegeChildren(resume.colleges);
 	const skillChild = assembleSkillChild(resume.technologies);
 	const workChildren = assembleWorkExperience(resume.employers);
@@ -23,14 +22,43 @@ async function Resume() {
 	return (
 		<div className={styles.container}>
 			<div className={styles.pageContent}>
-				<div className={styles.header}>
-					<div className={styles.nameContainer}>
-						<h1 className={styles.name}>{fullName}</h1>
-						<DownloadButton media={resume.resume} classname={styles.downloadButton} />
-					</div>
-					<p className={styles.contactInfo}>{fullContactInfo} &#8226; <a href={`mailto:${personalInfo.email}`} rel="nofollow" target="_blank">{personalInfo.email}</a> &#8226; <a href={personalInfo.github} target="_blank" rel="nofollow">{personalInfo.github}</a></p>
-				</div>
 				<div className={styles.contentContainer}>
+					<div className={styles.header}>
+						<div className={styles.nameContainer}>
+							<h1 className={styles.name}>{fullName}</h1>
+							<DownloadButton media={resume.resume} classname={styles.downloadButton} />
+						</div>
+						<div className={styles.contactInfoRow}>
+							<div className={styles.contactInfoColumn}>
+								<div className={styles.contactInfoCell}>
+									<p className={styles.contactInfoHeader}>Phone:</p>
+									<p className={styles.contactInfo}>{personalInfo.phoneNumber}</p>
+								</div>
+								<div className={styles.contactInfoCell}>
+									<p className={styles.contactInfoHeader}>Address:</p>
+									<p className={styles.contactInfo}>{fullAddress}</p>
+								</div>
+								<div className={styles.contactInfoCell}>
+									<p className={styles.contactInfoHeader}>Email:</p>
+									<p className={styles.contactInfo}><a className={styles.contactInfoLink} href={`mailto:${personalInfo.email}`}>{personalInfo.email}</a></p>
+								</div>
+							</div>
+							<div className={styles.contactInfoColumn}>
+								<div className={styles.contactInfoCell}>
+									<p className={styles.contactInfoHeader}>LinkedIn:</p>
+									<p className={styles.contactInfo}><a className={styles.contactInfoLink} href={personalInfo.linkedin} target="_blank" rel="nofollow">{personalInfo.linkedin}</a></p>
+								</div>
+								<div className={styles.contactInfoCell}>
+									<p className={styles.contactInfoHeader}>GitHub:</p>
+									<p className={styles.contactInfo}><a className={styles.contactInfoLink} href={personalInfo.github} target="_blank" rel="nofollow">{personalInfo.github}</a></p>
+								</div>
+								<div className={styles.contactInfoCell}>
+									<p className={styles.contactInfoHeader}>Portfolio:</p>
+									<p className={styles.contactInfo}><a className={styles.contactInfoLink} href={process.env.NEXT_PUBLIC_SITE_URL} target="_blank" rel="nofollow">{process.env.NEXT_PUBLIC_SITE_URL}</a></p>
+								</div>
+							</div>
+						</div>
+					</div>
 					<ResumeSubSection header="Education">
 						{collegeChildren}
 					</ResumeSubSection>

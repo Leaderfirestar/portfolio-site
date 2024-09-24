@@ -8,6 +8,38 @@
 	margin-top: 30px;
 }
 
+.contactInfoRow {
+	margin: 10px 0px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.contactInfoColumn {
+	display: flex;
+	flex-direction: column;
+}
+
+.contactInfoCell {
+	display: flex;
+	flex-direction: row;
+	column-gap: 5px;
+}
+
+.contactInfo {
+	margin: 0px;
+	text-align: left;
+	/* overflow-x: auto; */
+	/* white-space: initial; */
+	word-break: break-all;
+}
+
+.contactInfoHeader {
+	font-weight: 800;
+	margin: 0px;
+	text-align: left;
+}
+
 .contentContainer {
 	width: 90%;
 	margin: auto;
@@ -84,4 +116,10 @@
 		margin-top: 20px;
 		flex-direction: column;
 	}
+	.contactInfoRow {
+		flex-direction: column;
+	}
+	/* .contactInfoCell {
+		flex-direction: column;
+	} */
 }
