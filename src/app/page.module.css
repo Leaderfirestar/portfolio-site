@@ -19,7 +19,6 @@
 
 .quoteListItem {
 	list-style-type: none;
-	max-width: 45%;
 }
 
 .profileContainer {
@@ -41,6 +40,11 @@
 	.profile {
 		width: 300px;
 		height: 200px
+	}
+
+	.quoteList {
+		flex-direction: column;
+		row-gap: 10px;
 	}
 }
 
