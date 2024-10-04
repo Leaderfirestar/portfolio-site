@@ -85,7 +85,7 @@ async function ProjectPage({ params }: ProjectPageProps) {
 					</a>
 				)}
 			</div>
-			{project.gallery && project.gallery?.length > 0 && (
+			{/* {project.gallery && project.gallery?.length > 0 && (
 				<div>
 					<EmblaCarouselComponent slides={project.gallery.map(image => ({
 						id: image.id,
@@ -94,7 +94,7 @@ async function ProjectPage({ params }: ProjectPageProps) {
 					})) || []}
 					/>
 				</div>
-			)}
+			)} */}
 			<div>
 				<h2>Technologies Used</h2>
 				<div className={styles.technologyUsedIconContainer}>
