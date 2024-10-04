@@ -5,6 +5,7 @@ import { fetchResume } from "@/lib/resume";
 import styles from "./page.module.css";
 import { Metadata } from "next";
 import DownloadButton from "@/components/DownloadButton";
+import Link from "next/link";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const resume = await fetchResume();
@@ -54,7 +55,7 @@ async function Resume() {
 								</div>
 								<div className={styles.contactInfoCell}>
 									<p className={styles.contactInfoHeader}>Portfolio:</p>
-									<p className={styles.contactInfo}><a className={styles.contactInfoLink} href={process.env.NEXT_PUBLIC_SITE_URL} target="_blank" rel="nofollow">{process.env.NEXT_PUBLIC_SITE_URL}</a></p>
+									<p className={styles.contactInfo}><Link className={styles.contactInfoLink} href={"/"} target="_blank" rel="nofollow">{process.env.NEXT_PUBLIC_SITE_URL}</Link></p>
 								</div>
 							</div>
 						</div>
