@@ -69,13 +69,8 @@ a {
 /* styles/embla-carousel.css */
 .embla {
 	overflow: hidden;
-	width: 100%;
 	display: flex;
 	flex-direction: column;
-}
-
-.embla__viewport {
-	overflow: hidden;
 }
 
 .embla__container {
@@ -83,14 +78,8 @@ a {
 }
 
 .embla__slide {
-	position: relative;
-	min-width: 100%;
-}
-
-.embla__image {
-	display: block;
-	width: 100%;
-	height: auto;
+	flex: 0 0 100%;
+	min-width: 0;
 }
 
 /* button styles */

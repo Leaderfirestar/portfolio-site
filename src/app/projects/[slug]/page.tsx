@@ -1,9 +1,9 @@
-import styles from "./page.module.css";
 import RichTextRenderer from '@/components/RichTextRenderer';
 import { fetchProjectBySlug, fetchProjectsForBuildTimeGeneration } from '@/lib/projects';
-import { GetServerSideProps, GetServerSidePropsContext, Metadata } from 'next';
+import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import styles from "./page.module.css";
 
 interface ProjectPageProps {
 	params: { slug: string; };
@@ -47,7 +47,7 @@ export async function generateStaticParams() {
 	});
 };
 
-const EmblaCarouselComponent = dynamic(() => import("@/components/EmblaCarouselComponent"), {
+const Carousel = dynamic(() => import("@/components/Carousel"), {
 	ssr: false, // This ensures the component is only rendered on the client
 });
 
@@ -85,16 +85,12 @@ async function ProjectPage({ params }: ProjectPageProps) {
 					</a>
 				)}
 			</div>
-			{/* {project.gallery && project.gallery?.length > 0 && (
+			{project.gallery && project.gallery?.length > 0 && (
 				<div>
-					<EmblaCarouselComponent slides={project.gallery.map(image => ({
-						id: image.id,
-						url: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${image.url}`,
-						alt: image.alternativeText || ''
-					})) || []}
+					<Carousel gallery={project.gallery || []}
 					/>
 				</div>
-			)} */}
+			)}
 			<div>
 				<h2>Technologies Used</h2>
 				<div className={styles.technologyUsedIconContainer}>
