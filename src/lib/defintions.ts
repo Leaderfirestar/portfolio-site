@@ -26,7 +26,7 @@ export interface Media extends StrapiEntity {
 			sizeInBytes: number,
 			url: string;
 		},
-		small: {
+		small?: {
 			name: string;
 			hash: string;
 			ext: string;

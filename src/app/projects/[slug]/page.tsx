@@ -1,7 +1,7 @@
+import Carousel from '@/components/Carousel';
 import RichTextRenderer from '@/components/RichTextRenderer';
 import { fetchProjectBySlug, fetchProjectsForBuildTimeGeneration } from '@/lib/projects';
 import { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import styles from "./page.module.css";
 
@@ -47,9 +47,9 @@ export async function generateStaticParams() {
 	});
 };
 
-const Carousel = dynamic(() => import("@/components/Carousel"), {
-	ssr: false, // This ensures the component is only rendered on the client
-});
+// const Carousel = dynamic(() => import("@/components/Carousel"), {
+// 	ssr: false, // This ensures the component is only rendered on the client
+// });
 
 async function ProjectPage({ params }: ProjectPageProps) {
 	const { slug } = params;
@@ -87,8 +87,7 @@ async function ProjectPage({ params }: ProjectPageProps) {
 			</div>
 			{project.gallery && project.gallery?.length > 0 && (
 				<div>
-					<Carousel gallery={project.gallery || []}
-					/>
+					<Carousel gallery={project.gallery || []} />
 				</div>
 			)}
 			<div>

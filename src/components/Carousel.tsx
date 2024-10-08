@@ -2,7 +2,7 @@
 
 import { Media } from "@/lib/defintions";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import styles from "./Carousel.module.css";
 
 interface CarouselProps {
@@ -20,6 +20,7 @@ function Carousel({ gallery }: CarouselProps) {
 				width={media.width} height={media.height}
 				className={styles.image}
 				priority={index === 0}
+				blurDataURL={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${media.formats?.thumbnail.url}`}
 			/>
 		);
 	});
