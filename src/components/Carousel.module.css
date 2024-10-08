@@ -1,0 +1,11 @@
+.image {
+	max-height: 400px;
+	width: auto;
+	object-fit: contain;
+}
+
+@media only screen and (max-width: 480px) {
+	.image {
+		max-width: 450px;
+	}
+}

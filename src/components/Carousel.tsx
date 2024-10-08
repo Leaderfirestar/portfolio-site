@@ -2,15 +2,26 @@
 
 import { Media } from "@/lib/defintions";
 import Image from "next/image";
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import styles from "./Carousel.module.css";
 
-interface EmblaCarouselProps {
+interface CarouselProps {
 	gallery: Media[];
 }
 
-// Client side rendered to make use of the hook. Need to optimize image stuff
-function Carousel({ gallery }: EmblaCarouselProps) {
+function Carousel({ gallery }: CarouselProps) {
 	const [index, setIndex] = useState(0);
+	const images = gallery.map((media) => {
+		return (
+			<Image
+				key={`GalleryImage-${media.id}`}
+				src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${media.url}`}
+				alt={media.alternativeText}
+				width={media.width} height={media.height}
+				className={styles.image}
+			/>
+		);
+	});
 
 	const scrollNext = useCallback(() => {
 		let newIndex = index + 1;
@@ -27,10 +38,10 @@ function Carousel({ gallery }: EmblaCarouselProps) {
 	return (
 		<div>
 			<div style={{ display: "inline-block", flexDirection: "column", width: "auto" }}>
-				<Image src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${gallery[index].url}`} alt={gallery[index].alternativeText} width={gallery[index].width} height={gallery[index].height} style={{ maxHeight: "400px", width: "auto", objectFit: "contain" }} />
+				{images[index]}
 				<div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
-					<button onClick={scrollPrev}>&lt;</button>
-					<button onClick={scrollNext}>&gt;</button>
+					<button onClick={scrollPrev}>Previous Image</button>
+					<button onClick={scrollNext}>Next Image</button>
 				</div>
 			</div>
 		</div>
