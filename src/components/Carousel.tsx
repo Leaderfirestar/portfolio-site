@@ -11,7 +11,7 @@ interface CarouselProps {
 
 function Carousel({ gallery }: CarouselProps) {
 	const [index, setIndex] = useState(0);
-	const images = gallery.map((media) => {
+	const images = gallery.map((media, index) => {
 		return (
 			<Image
 				key={`GalleryImage-${media.id}`}
@@ -19,6 +19,7 @@ function Carousel({ gallery }: CarouselProps) {
 				alt={media.alternativeText}
 				width={media.width} height={media.height}
 				className={styles.image}
+				priority={index === 0}
 			/>
 		);
 	});
