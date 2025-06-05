@@ -17,7 +17,6 @@ export async function fetchProjects(): Promise<Project[]> {
 	const url = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?${query}`;
 	const response = await fetch(url);
 	const json = await response.json() as StrapiFindResponse<Project>;
-	console.log(`json data`, json.data);
 	if (json.data) return json.data;
 	console.error(json.error);
 	return [];
