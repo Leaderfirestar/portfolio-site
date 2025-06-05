@@ -15,10 +15,14 @@ export async function fetchResume(): Promise<Resume> {
 	const query = qs.stringify({
 		populate: {
 			colleges: {
-				populate: true,
+				populate: {
+					degrees: true
+				},
 			},
 			employers: {
-				populate: true,
+				populate: {
+					accomplishments: true,
+				},
 			},
 			technologies: true,
 			projects: true,
