@@ -5,12 +5,10 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import styles from "./page.module.css";
 
-interface ProjectPageProps {
-	params: { slug: string; };
-}
+type Params = Promise<{ slug: string; }>;
 
-export const generateMetadata = async ({ params }: ProjectPageProps): Promise<Metadata> => {
-	const { slug } = params;
+export const generateMetadata = async ({ params }: { params: Params; }): Promise<Metadata> => {
+	const { slug } = await params;
 	const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 
 	if (!apiUrl) return { title: 'Project Not Found' };
@@ -51,8 +49,8 @@ export async function generateStaticParams() {
 // 	ssr: false, // This ensures the component is only rendered on the client
 // });
 
-async function ProjectPage({ params }: ProjectPageProps) {
-	const { slug } = params;
+async function ProjectPage({ params }: { params: Params; }) {
+	const { slug } = await params;
 	const response = await fetchProjectBySlug(slug);
 
 	if (!response.data) {
