@@ -1,3 +1,4 @@
+import { profile } from "console";
 import { PersonalInfo } from "./defintions";
 import qs from 'qs';
 
@@ -13,7 +14,11 @@ interface QueryResponse {
  */
 export async function fetchPersonalInfo(): Promise<PersonalInfo> {
 	const query = qs.stringify({
-		populate: true,
+		populate: {
+			page_metadata: true,
+			profile: true,
+			quotes: true,
+		}
 	}, { encodeValuesOnly: true });
 	const url = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/personal-info?${query}`;
 	const response = await fetch(url);
