@@ -1,4 +1,5 @@
 import { College } from "./defintions";
+import qs from "qs";
 
 interface QueryResponse {
 	data: College[];
@@ -11,7 +12,11 @@ interface QueryResponse {
  * @returns The college info and all related documents
  */
 export async function fetchCollegeInfo(): Promise<College[]> {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/colleges?populate=*`);
+	const query = qs.stringify({
+		populate: true,
+	}, { encodeValuesOnly: true });
+	const url = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/colleges?${query}`;
+	const response = await fetch(url);
 	if (!response.ok) {
 		throw new Error("Failed to fetch college data");
 	}

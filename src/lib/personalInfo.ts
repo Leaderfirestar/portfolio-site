@@ -1,4 +1,5 @@
 import { PersonalInfo } from "./defintions";
+import qs from 'qs';
 
 interface QueryResponse {
 	data: PersonalInfo;
@@ -11,7 +12,11 @@ interface QueryResponse {
  * @returns All personal info and related documents
  */
 export async function fetchPersonalInfo(): Promise<PersonalInfo> {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/personal-info?populate=*`);
+	const query = qs.stringify({
+		populate: true,
+	}, { encodeValuesOnly: true });
+	const url = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/personal-info?${query}`;
+	const response = await fetch(url);
 	if (!response.ok) {
 		throw new Error('Failed to fetch personal data');
 	}

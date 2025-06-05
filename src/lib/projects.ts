@@ -1,4 +1,5 @@
 import { Project, StrapiFindResponse, StrapiSingleThingResponse } from "./defintions";
+import qs from 'qs';
 
 /**
  * Fetches all published projects from strapi. Orders them by the sortIndex
@@ -6,8 +7,17 @@ import { Project, StrapiFindResponse, StrapiSingleThingResponse } from "./defint
  * @returns The projects, sorted how I define in strapi
  */
 export async function fetchProjects(): Promise<Project[]> {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?populate=*&sort=sortIndex:asc`);
+	const query = qs.stringify({
+		populate: {
+			image: true,
+		},
+		sort: ['sortIndex:asc'],
+	}, { encodeValuesOnly: true });
+
+	const url = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?${query}`;
+	const response = await fetch(url);
 	const json = await response.json() as StrapiFindResponse<Project>;
+	console.log(`json data`, json.data);
 	if (json.data) return json.data;
 	console.error(json.error);
 	return [];
@@ -19,7 +29,19 @@ export async function fetchProjects(): Promise<Project[]> {
  * @returns All projects
  */
 export async function fetchProjectsForBuildTimeGeneration(): Promise<Project[]> {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?populate[image]=*&populate[gallery]=*&populate[technologies][populate]=logo&populate[technologies][sort]=name:asc&populate[page_metadata]=*`);
+	const query = qs.stringify({
+		populate: {
+			image: true,
+			gallery: true,
+			technologies: {
+				populate: ['logo'],
+				sort: ['name:asc'],
+			},
+			page_metadata: true,
+		},
+	}, { encodeValuesOnly: true });
+	const url = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?${query}`;
+	const response = await fetch(url);
 	const responseJson = await response.json() as StrapiFindResponse<Project>;
 	if (responseJson.data) return responseJson.data;
 	return [];
@@ -32,7 +54,24 @@ export async function fetchProjectsForBuildTimeGeneration(): Promise<Project[]> 
  * @returns The project with that slug
  */
 export async function fetchProjectBySlug(slug: string): Promise<StrapiSingleThingResponse<Project>> {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?filters[slug][$eq]=${slug}&populate[image]=*&populate[gallery]=*&populate[technologies][populate]=logo&populate[technologies][sort]=name:asc&populate[page_metadata]=*`);
+	const query = qs.stringify({
+		filters: {
+			slug: {
+				$eq: slug,
+			},
+		},
+		populate: {
+			image: true,
+			gallery: true,
+			technologies: {
+				populate: ['logo'],
+				sort: ['name:asc'],
+			},
+			page_metadata: true,
+		},
+	}, { encodeValuesOnly: true });
+	const url = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/projects?${query}`;
+	const response = await fetch(url);
 	const json = await response.json() as StrapiSingleThingResponse<Project>;
 	return json;
 }

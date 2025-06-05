@@ -1,4 +1,5 @@
 import { ProjectPage } from "./defintions";
+import qs from 'qs';
 
 interface QueryResponse {
 	data: ProjectPage;
@@ -11,7 +12,13 @@ interface QueryResponse {
  * @returns The project page data
  */
 export async function fetchProjectPage(): Promise<ProjectPage> {
-	const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/project-page?populate[page_metadata]=*`);
+	const query = qs.stringify({
+		populate: {
+			page_metadata: true,
+		},
+	}, { encodeValuesOnly: true });
+	const url = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/project-page?${query}`;
+	const response = await fetch(url);
 	if (!response.ok) {
 		throw new Error('Failed to fetch project page data');
 	}
