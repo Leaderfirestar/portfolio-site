@@ -24,7 +24,11 @@ export async function fetchResume(): Promise<Resume> {
 					accomplishments: true,
 				},
 			},
-			technologies: true,
+			techcategories: {
+				populate: {
+					technologies: true,
+				},
+			},
 			projects: true,
 			page_metadata: true,
 			resume: true,

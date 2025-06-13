@@ -82,6 +82,11 @@ export interface Technology extends StrapiEntity {
 	logo?: Media | null;
 }
 
+export interface TechCategory {
+	name: string;
+	technologies: Technology[];
+}
+
 interface StrapiFindMeta {
 	page: number;
 	pageSize: number;
@@ -179,7 +184,7 @@ export interface Resume extends StrapiEntity {
 	page_metadata: PageMetadata;
 	projects: Project[];
 	resume: Media;
-	technologies: Technology[];
+	techcategories: TechCategory[];
 }
 
 export interface Employer extends StrapiEntity {
