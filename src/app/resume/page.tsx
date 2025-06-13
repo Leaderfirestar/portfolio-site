@@ -1,5 +1,5 @@
 import ResumeSubSection from "@/components/ResumeSubSection";
-import { College, Employer, Project, Technology } from "@/lib/defintions";
+import { College, Employer, Project, TechCategory, Technology } from "@/lib/defintions";
 import { fetchPersonalInfo } from "@/lib/personalInfo";
 import { fetchResume } from "@/lib/resume";
 import styles from "./page.module.css";
@@ -17,7 +17,7 @@ async function Resume() {
 	const fullAddress = `${personalInfo.address}, ${personalInfo.city}, ${personalInfo.state}, ${personalInfo.zip}`;
 	const fullName = `${personalInfo.firstName} ${personalInfo.lastName}`.toUpperCase();
 	const collegeChildren = assembleCollegeChildren(resume.colleges);
-	const skillChild = assembleSkillChild(resume.technologies);
+	const skillChild = assembleSkillChild(resume.techcategories);
 	const workChildren = assembleWorkExperience(resume.employers);
 	const projectChildren = assembleProjectStuff(resume.projects);
 	return (
@@ -60,14 +60,14 @@ async function Resume() {
 							</div>
 						</div>
 					</div>
-					<ResumeSubSection header="Education">
-						{collegeChildren}
-					</ResumeSubSection>
 					<ResumeSubSection header="Skills">
 						{skillChild}
 					</ResumeSubSection>
 					<ResumeSubSection header="Work Experience">
 						{workChildren}
+					</ResumeSubSection>
+					<ResumeSubSection header="Education">
+						{collegeChildren}
 					</ResumeSubSection>
 					<ResumeSubSection header="Projects">
 						{projectChildren}
@@ -121,15 +121,33 @@ function assembleCollegeChildren(colleges: College[]): JSX.Element[] {
 /**
  * Given the technologies, creates a paragraph listing those skills
  * @author Eric Webb <ericawebb2000@yahoo.com>
- * @param technologies The technologies I want listed on my resume
+ * @param techcategories The technologies I want listed on my resume
  * @returns The skills listed out
  */
-function assembleSkillChild(technologies: Technology[]): JSX.Element[] {
-	let final = "";
-	for (let i = 0; i < technologies.length; i++) {
-		final += i === technologies.length - 1 ? technologies[i].name : `${technologies[i].name}, `;
+function assembleSkillChild(techcategories: TechCategory[]): JSX.Element {
+	const final: Record<string, string> = {};
+	for (let i = 0; i < techcategories.length; i++) {
+		const techcategory = techcategories[i];
+		for (let j = 0; j < techcategory.technologies.length; j++) {
+			const technology = techcategory.technologies[j];
+			if (!final[techcategory.name]) {
+				final[techcategory.name] = technology.name;
+			} else {
+				final[techcategory.name] += `, ${technology.name}`;
+			}
+		}
 	}
-	return [<p key="skill list" className={styles.subsectionP}>{final}</p>];
+	return (
+		<div>
+			{Object.keys(final).map((category) => {
+				return (
+					<p key={`TechCategory-${category}`} className={styles.subsectionP}>
+						<span className={styles.boldSpan}>{category}:</span> {final[category]}
+					</p>
+				);
+			})}
+		</div>
+	);
 }
 
 /**
