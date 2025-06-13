@@ -1,7 +1,7 @@
 import styles from "./ResumeSubSection.module.css";
 
 interface Props {
-	children: JSX.Element[];
+	children: JSX.Element[] | JSX.Element;
 	header: string;
 }
 
