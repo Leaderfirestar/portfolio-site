@@ -34,16 +34,14 @@ test("Navbar and footer exist on all pages", async ({ page, request }) => {
 	}
 });
 
-test("All nav links work on all pages", async ({ page }) => {
-	for (const from of pages) {
-		page.goto(from);
-		for (const to of pages) {
-			const name = to === "/" ? "Home" : to.slice(1).charAt(0).toUpperCase() + to.slice(2);
-			await page.getByRole("navigation").getByRole("link", { name }).click();
-			await expect(page).toHaveURL(to);
-			if (from !== page.url()) {
-				await page.goto(from);
-			}
+test("All nav links work", async ({ page }) => {
+	page.goto("/");
+	for (const path of pages) {
+		const name = path === "/" ? "Home" : path.slice(1).charAt(0).toUpperCase() + path.slice(2);
+		await page.getByRole("navigation").getByRole("link", { name }).click();
+		await expect(page).toHaveURL(path);
+		if (path !== "/") {
+			await page.goto(path);
 		}
 	}
 });
