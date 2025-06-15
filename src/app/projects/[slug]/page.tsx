@@ -98,12 +98,14 @@ async function ProjectPage({ params }: { params: Params; }) {
 	};
 	return (
 		<>
-			<Head>
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-				/>
-			</Head>
+			{process.env.VERCEL_ENV === "production" && (
+				<Head>
+					<script
+						type="application/ld+json"
+						dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
+					/>
+				</Head>
+			)}
 			<div>
 				<div className={styles.titleContainer}>
 					{project.projectUrl ? (

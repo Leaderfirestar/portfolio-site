@@ -51,7 +51,7 @@ async function Resume() {
 			<Head>
 				<script
 					type="application/ld+json"
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
 				/>
 			</Head>
 			<div className={styles.container}>
