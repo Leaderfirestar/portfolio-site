@@ -5,7 +5,8 @@ import { fetchProjects } from "@/lib/projects";
 import { Metadata } from "next";
 import Image from "next/image";
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata | undefined> {
+	if (process.env.VERCEL_ENV !== "production") return;
 	const projectPage = await fetchProjectPage();
 	const metadata: Metadata = {
 		...projectPage.page_metadata,

@@ -7,7 +7,8 @@ import styles from "./page.module.css";
 
 type Params = Promise<{ slug: string; }>;
 
-export const generateMetadata = async ({ params }: { params: Params; }): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: { params: Params; }): Promise<Metadata | undefined> => {
+	if (process.env.VERCEL_ENV !== "production") return;
 	const { slug } = await params;
 	const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 

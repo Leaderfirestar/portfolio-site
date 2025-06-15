@@ -4,7 +4,8 @@ import { fetchPersonalInfo } from "@/lib/personalInfo";
 import { Metadata } from "next";
 import Image from "next/image";
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata | undefined> {
+	if (process.env.VERCEL_ENV !== "production") return;
 	const personalInfo = await fetchPersonalInfo();
 	const metadata: Metadata = {
 		...personalInfo.page_metadata,
