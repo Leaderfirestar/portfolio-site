@@ -27,7 +27,7 @@ test("Navbar and footer exist on all pages", async ({ page, request }) => {
 
 		// Footer
 		const footer = page.getByRole("contentinfo");
-		await expect(footer).toBeVisible(); // ARIA role for footer
+		await expect(footer).toBeVisible();
 		await expect(footer.getByRole("link", { name: personalInfo.data.email })).toHaveAttribute("href", `mailto:${personalInfo.data.email}`);
 		await expect(footer.getByRole("link", { name: `${personalInfo.data.firstName} ${personalInfo.data.lastName}'s github` })).toHaveAttribute("href", personalInfo.data.github);
 		await expect(footer.getByRole("link", { name: `${personalInfo.data.firstName} ${personalInfo.data.lastName}'s linkedin` })).toHaveAttribute("href", personalInfo.data.linkedin);
