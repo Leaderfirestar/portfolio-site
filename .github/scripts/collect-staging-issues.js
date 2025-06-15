@@ -46,7 +46,7 @@ async function run() {
 		owner, repo, pull_number: parseInt(stagingToMasterPr, 10),
 	});
 
-	if (!masterPr.body.includes(closeLine.trim())) {
+	if (!(masterPr.body || "").includes(closeLine.trim())) {
 		const updatedBody = (masterPr.body || "") + closeLine;
 		await octokit.pulls.update({
 			owner,
