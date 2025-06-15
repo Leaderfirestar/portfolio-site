@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const port = process.env.PORT || 3000;
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || `http://localhost:${port}`;
+const BASE_URL = `http://localhost:${port}`;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -70,6 +70,6 @@ export default defineConfig({
 		command: 'npm run start',
 		url: BASE_URL,
 		timeout: 120 * 1000, // 2 minutes
-		reuseExistingServer: !process.env.CI,
+		reuseExistingServer: true,
 	},
 });
