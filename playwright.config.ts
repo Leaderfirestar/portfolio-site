@@ -70,6 +70,6 @@ export default defineConfig({
 		command: 'npm run start',
 		url: BASE_URL,
 		timeout: 120 * 1000, // 2 minutes
-		reuseExistingServer: !process.env.CI,
+		reuseExistingServer: true,
 	},
 });
