@@ -7,7 +7,22 @@ import Image from "next/image";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const projectPage = await fetchProjectPage();
-	return projectPage.page_metadata;
+	const metadata: Metadata = {
+		...projectPage.page_metadata,
+		openGraph: {
+			title: projectPage.page_metadata.title,
+			description: projectPage.page_metadata.description,
+			url: `${process.env.NEXT_PUBLIC_SITE_URL}/projects`,
+			siteName: projectPage.page_metadata.applicationName,
+			type: "website",
+		},
+		twitter: {
+			title: projectPage.page_metadata.title,
+			description: projectPage.page_metadata.description,
+			card: "summary_large_image",
+		}
+	};
+	return metadata;
 }
 
 async function Projects() {
