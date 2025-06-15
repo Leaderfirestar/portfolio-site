@@ -26,7 +26,31 @@ export const generateMetadata = async ({ params }: { params: Params; }): Promise
 	}
 	const metadata: Metadata = {
 		...response.data[0].page_metadata,
-		keywords
+		keywords,
+		openGraph: {
+			title: response.data[0].page_metadata.title,
+			description: response.data[0].page_metadata.description,
+			url: `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${slug}`,
+			siteName: response.data[0].page_metadata.applicationName,
+			type: "website",
+			images: [
+				{
+					url: `${apiUrl}${response.data[0].image?.url}`,
+					alt: response.data[0].image?.alternativeText || response.data[0].title,
+				},
+			],
+		},
+		twitter: {
+			title: response.data[0].page_metadata.title,
+			description: response.data[0].page_metadata.description,
+			card: "summary_large_image",
+			images: [
+				{
+					url: `${apiUrl}${response.data[0].image?.url}`,
+					alt: response.data[0].image?.alternativeText || response.data[0].title,
+				},
+			],
+		},
 	};
 	return metadata;
 };
