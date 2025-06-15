@@ -1,12 +1,12 @@
 const { Octokit } = require("@octokit/rest");
 
-const [baseBranch, headBranch, repoFull, stagingToMainPr] = process.argv.slice(2);
+const [baseBranch, headBranch, repoFull, stagingToMasterPr] = process.argv.slice(2);
 
 const [owner, repo] = repoFull.split("/");
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
 async function run() {
-	// 1️⃣ Find merged PRs into staging since last main
+	// 1️⃣ Find merged PRs into staging since last mastery
 	const { data: commits } = await octokit.repos.compareCommits({
 		owner, repo, base: baseBranch, head: headBranch,
 	});
@@ -40,21 +40,21 @@ async function run() {
 		return;
 	}
 
-	// 3️⃣ Update the PR description on staging→main
+	// 3️⃣ Update the PR description on staging→mastery
 	const closeLine = `\n\n**Closes:** ${[...issuesToClose].join(", ")}`;
-	const { data: mainPr } = await octokit.pulls.get({
-		owner, repo, pull_number: parseInt(stagingToMainPr, 10),
+	const { data: masterPr } = await octokit.pulls.get({
+		owner, repo, pull_number: parseInt(stagingToMasterPr, 10),
 	});
 
-	if (!mainPr.body.includes(closeLine.trim())) {
-		const updatedBody = (mainPr.body || "") + closeLine;
+	if (!masterPr.body.includes(closeLine.trim())) {
+		const updatedBody = (masterPr.body || "") + closeLine;
 		await octokit.pulls.update({
 			owner,
 			repo,
-			pull_number: mainPr.number,
+			pull_number: masterPr.number,
 			body: updatedBody,
 		});
-		console.log(`Appended "${closeLine.trim()}" to PR #${mainPr.number}`);
+		console.log(`Appended "${closeLine.trim()}" to PR #${masterPr.number}`);
 	} else {
 		console.log("✅ Issue references already exist in PR body.");
 	}
