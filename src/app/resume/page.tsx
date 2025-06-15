@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata | undefined> {
 			card: "summary_large_image",
 			title: resume.page_metadata.title,
 			description: resume.page_metadata.description,
-			// If I ever make a twitter, I can uncomment these and assosciate my personal twitter with creator and site. site could also be my website's twitter
+			// If I ever make a twitter, I can uncomment these and assosciate my personal twitter with creator and site. site could also be my website's twitter.
 			// site: "",
 			// creator: ""
 		},
