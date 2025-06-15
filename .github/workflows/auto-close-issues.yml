@@ -1,0 +1,28 @@
+name: Auto-link issues from staging PRs
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, synchronize]
+
+jobs:
+  link-issues:
+    permissions:
+      pull-requests: write
+      contents: read
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Append staging issues to PR body
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node .github/scripts/collect-staging-issues.js \
+            staging main \
+            ${{ github.repository }} \
+            ${{ github.event.pull_request.number }}
