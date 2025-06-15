@@ -1,9 +1,12 @@
 import styles from "./page.module.css";
-import { Project } from "@/lib/defintions";
+import { JsonLd, Project } from "@/lib/defintions";
+import { fetchPersonalInfo } from "@/lib/personalInfo";
 import { fetchProjectPage } from "@/lib/projectPage";
 import { fetchProjects } from "@/lib/projects";
 import { Metadata } from "next";
+import Head from "next/head";
 import Image from "next/image";
+import { CreativeWork } from "schema-dts";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
 	if (process.env.VERCEL_ENV !== "production") return;
@@ -27,18 +30,42 @@ export async function generateMetadata(): Promise<Metadata | undefined> {
 }
 
 async function Projects() {
-	const [projects, projectPage] = await Promise.all([fetchProjects(), fetchProjectPage()]);
+	const [projects, projectPage, personalInfo] = await Promise.all([fetchProjects(), fetchProjectPage(), fetchPersonalInfo()]);
 	const finalProjectListElements = buildProjectList(projects);
+	const jsonLd: JsonLd<CreativeWork> = {
+		"@context": "https://schema.org",
+		"@type": "Collection",
+		"@graph": projects.map<CreativeWork>((project) => ({
+			"@type": "CreativeWork",
+			"@id": `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${project.slug}#project`,
+			"name": project.title,
+			"description": project.shortDescription,
+			"url": `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${project.slug}`,
+			"image": `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${project.image?.url}`,
+			"author": {
+				"@type": "Person",
+				"@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#author`,
+			}
+		}))
+	};
 	return (
-		<div>
-			<div className={styles.titleContainer}>
-				<h1>{projectPage.name}</h1>
-				<h2>{projectPage.description}</h2>
+		<>
+			<Head>
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+				/>
+			</Head>
+			<div>
+				<div className={styles.titleContainer}>
+					<h1>{projectPage.name}</h1>
+					<h2>{projectPage.description}</h2>
+				</div>
+				<ul className={styles.projectList}>
+					{finalProjectListElements}
+				</ul>
 			</div>
-			<ul className={styles.projectList}>
-				{finalProjectListElements}
-			</ul>
-		</div>
+		</>
 	);
 }
 
