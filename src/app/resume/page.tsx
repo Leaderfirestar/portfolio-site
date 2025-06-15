@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 		openGraph: {
 			title: resume.page_metadata.title,
 			description: resume.page_metadata.description,
-			url: process.env.NEXT_PUBLIC_SITE_URL,
+			url: `${process.env.NEXT_PUBLIC_SITE_URL}/resume`,
 			siteName: resume.page_metadata.applicationName,
 			type: "website",
 		},
