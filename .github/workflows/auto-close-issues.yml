@@ -14,15 +14,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      - name: Install Octokit
+        run: npm install @octokit/rest
 
       - name: Append staging issues to PR body
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           node .github/scripts/collect-staging-issues.js \
-            staging main \
+            staging master \
             ${{ github.repository }} \
             ${{ github.event.pull_request.number }}
