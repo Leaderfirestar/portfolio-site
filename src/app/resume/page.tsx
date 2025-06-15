@@ -7,9 +7,28 @@ import { Metadata } from "next";
 import DownloadButton from "@/components/DownloadButton";
 import Link from "next/link";
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata | undefined> {
+	if (process.env.VERCEL_ENV !== "production") return;
 	const resume = await fetchResume();
-	return resume.page_metadata;
+	const metadata: Metadata = {
+		...resume.page_metadata,
+		openGraph: {
+			title: resume.page_metadata.title,
+			description: resume.page_metadata.description,
+			url: `${process.env.NEXT_PUBLIC_SITE_URL}/resume`,
+			siteName: resume.page_metadata.applicationName,
+			type: "website",
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: resume.page_metadata.title,
+			description: resume.page_metadata.description,
+			// If I ever make a twitter, I can uncomment these and assosciate my personal twitter with creator and site. site could also be my website's twitter.
+			// site: "",
+			// creator: ""
+		},
+	};
+	return metadata;
 }
 
 async function Resume() {
