@@ -4,6 +4,9 @@ import { fetchProjectBySlug, fetchProjectsForBuildTimeGeneration } from '@/lib/p
 import { Metadata } from 'next';
 import Image from 'next/image';
 import styles from "./page.module.css";
+import { JsonLd } from '@/lib/defintions';
+import { CreativeWork } from 'schema-dts';
+import Head from 'next/head';
 
 type Params = Promise<{ slug: string; }>;
 
@@ -86,54 +89,71 @@ async function ProjectPage({ params }: { params: Params; }) {
 		return <p>Project not found</p>;
 	}
 	const project = response.data[0];
+
+	const jsonLd: JsonLd<CreativeWork> = {
+		"@context": "https://schema.org",
+		"@type": "CreativeWork",
+		"@id": `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${project.slug}#project`,
+		"url": project.projectUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${project.slug}`
+	};
 	return (
-		<div>
-			<div className={styles.titleContainer}>
-				{project.projectUrl ? (
-					<a href={project.projectUrl} className={styles.projectUrl} target="_blank">
-						<h1 className={styles.projectTitle}>{project.title}</h1>
-						<Image height={24} width={24} src={"/newTab.svg"} alt={`Link to ${project.title}`} />
-					</a>
-				) : (
-					<h1>{project.title}</h1>
-				)}
-				{project.githubUrl && (
-					<a href={project.githubUrl} className={styles.githubLogo} target="_blank" rel="nofollow">
-						<Image
-							width={49}
-							height={48}
-							alt="Github Repository"
-							src={"/github.svg"}
-						/>
-					</a>
-				)}
-			</div>
-			{project.gallery && project.gallery?.length > 0 && (
-				<div>
-					<Carousel gallery={project.gallery || []} />
-				</div>
+		<>
+			{process.env.VERCEL_ENV === "production" && (
+				<Head>
+					<script
+						type="application/ld+json"
+						dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
+					/>
+				</Head>
 			)}
 			<div>
-				<h2>Technologies Used</h2>
-				<div className={styles.technologyUsedIconContainer}>
-					{project.technologies.map((tech) => (
-						<div key={tech.id} className={styles.technologyContainer}>
-							<div>
-								<Image
-									src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${tech.logo?.url}`}
-									width={96}
-									height={96}
-									alt={tech.logo?.alternativeText || ""}
-									className={styles.technologyImage}
-								/>
-							</div>
-							<span>{tech.name}</span>
-						</div>
-					))}
+				<div className={styles.titleContainer}>
+					{project.projectUrl ? (
+						<a href={project.projectUrl} className={styles.projectUrl} target="_blank">
+							<h1 className={styles.projectTitle}>{project.title}</h1>
+							<Image height={24} width={24} src={"/newTab.svg"} alt={`Link to ${project.title}`} />
+						</a>
+					) : (
+						<h1>{project.title}</h1>
+					)}
+					{project.githubUrl && (
+						<a href={project.githubUrl} className={styles.githubLogo} target="_blank" rel="nofollow">
+							<Image
+								width={49}
+								height={48}
+								alt="Github Repository"
+								src={"/github.svg"}
+							/>
+						</a>
+					)}
 				</div>
+				{project.gallery && project.gallery?.length > 0 && (
+					<div>
+						<Carousel gallery={project.gallery || []} />
+					</div>
+				)}
+				<div>
+					<h2>Technologies Used</h2>
+					<div className={styles.technologyUsedIconContainer}>
+						{project.technologies.map((tech) => (
+							<div key={tech.id} className={styles.technologyContainer}>
+								<div>
+									<Image
+										src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${tech.logo?.url}`}
+										width={96}
+										height={96}
+										alt={tech.logo?.alternativeText || ""}
+										className={styles.technologyImage}
+									/>
+								</div>
+								<span>{tech.name}</span>
+							</div>
+						))}
+					</div>
+				</div>
+				<RichTextRenderer nodes={project.description} />
 			</div>
-			<RichTextRenderer nodes={project.description} />
-		</div>
+		</>
 	);
 };
 
