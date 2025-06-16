@@ -71,7 +71,7 @@ jobs:
               echo "$PR_BODY" | head -c 50 | xxd -p
               # Use a temporary variable for the regex loop
               TEMP_PR_BODY="$PR_BODY"
-              REGEX='(fix|fixes|fixed|close|closes|closed|resolve|resolves|resolved)\s+#([0-9]+)' 
+              REGEX='(fix|fixes|fixed|close|closes|closed|resolve|resolves|resolved).*?#([0-9]+)' 
               while [[ "$TEMP_PR_BODY" =~ $REGEX ]]; do
                 ISSUE_NUMBERS_FROM_PRS+=" ${BASH_REMATCH[2]}"
                 # Remove the matched part to find more in the same string
