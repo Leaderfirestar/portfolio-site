@@ -44,24 +44,15 @@ jobs:
         id: find_issues_from_pr_bodies
         run: |
           ISSUE_NUMBERS_FROM_PRS=""
-          # Use the GitHub CLI to list PRs merged into 'staging'
-          # since the merge_base_date.
-          # The 'merged' filter refers to the date of the merge event.
-          # The 'head' option is not precise enough to know which branch it came from
-          # but we assume PRs merged into staging come from feature branches.
-          # The query `is:pr is:merged base:staging merged:>${{ env.MERGE_BASE_DATE }}` is very powerful.
-          # It looks for PRs (is:pr), that are merged (is:merged), targeting 'staging' (base:staging),
-          # and merged AFTER the merge base date.
 
-          echo "Searching for PRs merged into 'staging' since ${{ env.MERGE_BASE_DATE }}..."
+          MERGE_BASE_DATE="${{ env.MERGE_BASE_DATE }}" # Use the env variable directly
 
-          # Fetch details for merged PRs using gh pr list and filter by date.
-          # Fetching more than 100 might require pagination. For typical release cycles, 100 should be enough.
-          # We're interested in the PR number and body.
-          MERGED_PRS_INFO=$(gh pr list --state closed --base staging --json number,body,mergedAt --search "merged:>${{ env.MERGE_BASE_DATE }}" --jq '.[]')
+          echo "Searching for PRs merged into 'staging' since $MERGE_BASE_DATE..."
+
+          MERGED_PRS_INFO=$(gh pr list --state closed --base staging --json number,body,mergedAt --search "merged:>$MERGE_BASE_DATE" --jq '.[]')
 
           if [ -z "$MERGED_PRS_INFO" ]; then
-            echo "No PRs merged into 'staging' found since ${{ env.MERGE_BASE_DATE }} with relevant closing keywords."
+            echo "No PRs merged into 'staging' found since $MERGE_BASE_DATE with relevant closing keywords."
             exit 0 # Exit early if nothing new to process
           fi
 
@@ -79,7 +70,9 @@ jobs:
 
               # Use a temporary variable for the regex loop
               TEMP_PR_BODY="$PR_BODY"
-              REGEX='(fixes|closes|resolves)[[:space:]]+#([0-9]+)'
+              # --- MODIFIED REGEX HERE ---
+              # Changed '[[:space:]]+' to '\s+' for broader whitespace matching, including NBSP.
+              REGEX='(fix|fixes|fixed|close|closes|closed|resolve|resolves|resolved)\s+#([0-9]+)' 
               while [[ "$TEMP_PR_BODY" =~ $REGEX ]]; do
                 ISSUE_NUMBERS_FROM_PRS+=" ${BASH_REMATCH[2]}"
                 # Remove the matched part to find more in the same string
