@@ -210,3 +210,9 @@ export interface PageMetadata extends StrapiEntity {
 	referrer: ReferrerEnum;
 	title: string;
 };
+
+export type JsonLd<T> = T & {
+	"@context": string;
+	"@type": string;
+	"@graph"?: T[];
+};

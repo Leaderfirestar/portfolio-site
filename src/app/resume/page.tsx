@@ -1,11 +1,13 @@
 import ResumeSubSection from "@/components/ResumeSubSection";
-import { College, Employer, Project, TechCategory, Technology } from "@/lib/defintions";
+import { College, Employer, JsonLd, Project, TechCategory, Technology } from "@/lib/defintions";
 import { fetchPersonalInfo } from "@/lib/personalInfo";
 import { fetchResume } from "@/lib/resume";
 import styles from "./page.module.css";
 import { Metadata } from "next";
 import DownloadButton from "@/components/DownloadButton";
 import Link from "next/link";
+import Head from "next/head";
+import { Person } from "schema-dts";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
 	if (process.env.VERCEL_ENV !== "production") return;
@@ -39,61 +41,74 @@ async function Resume() {
 	const skillChild = assembleSkillChild(resume.techcategories);
 	const workChildren = assembleWorkExperience(resume.employers);
 	const projectChildren = assembleProjectStuff(resume.projects);
+	const jsonLd: JsonLd<Person> = {
+		"@context": "https://schema.org",
+		"@type": "Person",
+		"@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#author`,
+	};
 	return (
-		<div className={styles.container}>
-			<div className={styles.pageContent}>
-				<div className={styles.contentContainer}>
-					<div className={styles.header}>
-						<div className={styles.nameContainer}>
-							<h1 className={styles.name}>{fullName}</h1>
-							<DownloadButton media={resume.resume} classname={styles.downloadButton} />
-						</div>
-						<div className={styles.contactInfoRow}>
-							<div className={styles.contactInfoColumn}>
-								<div className={styles.contactInfoCell}>
-									<p className={styles.contactInfoHeader}>Phone:</p>
-									<p className={styles.contactInfo}>{personalInfo.phoneNumber}</p>
+		<>
+			<Head>
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
+				/>
+			</Head>
+			<div className={styles.container}>
+				<div className={styles.pageContent}>
+					<div className={styles.contentContainer}>
+						<div className={styles.header}>
+							<div className={styles.nameContainer}>
+								<h1 className={styles.name}>{fullName}</h1>
+								<DownloadButton media={resume.resume} classname={styles.downloadButton} />
+							</div>
+							<div className={styles.contactInfoRow}>
+								<div className={styles.contactInfoColumn}>
+									<div className={styles.contactInfoCell}>
+										<p className={styles.contactInfoHeader}>Phone:</p>
+										<p className={styles.contactInfo}>{personalInfo.phoneNumber}</p>
+									</div>
+									<div className={styles.contactInfoCell}>
+										<p className={styles.contactInfoHeader}>Address:</p>
+										<p className={styles.contactInfo}>{fullAddress}</p>
+									</div>
+									<div className={styles.contactInfoCell}>
+										<p className={styles.contactInfoHeader}>Email:</p>
+										<p className={styles.contactInfo}><a className={styles.contactInfoLink} href={`mailto:${personalInfo.email}`}>{personalInfo.email}</a></p>
+									</div>
 								</div>
-								<div className={styles.contactInfoCell}>
-									<p className={styles.contactInfoHeader}>Address:</p>
-									<p className={styles.contactInfo}>{fullAddress}</p>
-								</div>
-								<div className={styles.contactInfoCell}>
-									<p className={styles.contactInfoHeader}>Email:</p>
-									<p className={styles.contactInfo}><a className={styles.contactInfoLink} href={`mailto:${personalInfo.email}`}>{personalInfo.email}</a></p>
+								<div className={styles.contactInfoColumn}>
+									<div className={styles.contactInfoCell}>
+										<p className={styles.contactInfoHeader}>LinkedIn:</p>
+										<p className={styles.contactInfo}><a className={styles.contactInfoLink} href={personalInfo.linkedin} target="_blank" rel="nofollow">{personalInfo.linkedin}</a></p>
+									</div>
+									<div className={styles.contactInfoCell}>
+										<p className={styles.contactInfoHeader}>GitHub:</p>
+										<p className={styles.contactInfo}><a className={styles.contactInfoLink} href={personalInfo.github} target="_blank" rel="nofollow">{personalInfo.github}</a></p>
+									</div>
+									<div className={styles.contactInfoCell}>
+										<p className={styles.contactInfoHeader}>Portfolio:</p>
+										<p className={styles.contactInfo}><Link className={styles.contactInfoLink} href={"/"} target="_blank" rel="nofollow">{process.env.NEXT_PUBLIC_SITE_URL}</Link></p>
+									</div>
 								</div>
 							</div>
-							<div className={styles.contactInfoColumn}>
-								<div className={styles.contactInfoCell}>
-									<p className={styles.contactInfoHeader}>LinkedIn:</p>
-									<p className={styles.contactInfo}><a className={styles.contactInfoLink} href={personalInfo.linkedin} target="_blank" rel="nofollow">{personalInfo.linkedin}</a></p>
-								</div>
-								<div className={styles.contactInfoCell}>
-									<p className={styles.contactInfoHeader}>GitHub:</p>
-									<p className={styles.contactInfo}><a className={styles.contactInfoLink} href={personalInfo.github} target="_blank" rel="nofollow">{personalInfo.github}</a></p>
-								</div>
-								<div className={styles.contactInfoCell}>
-									<p className={styles.contactInfoHeader}>Portfolio:</p>
-									<p className={styles.contactInfo}><Link className={styles.contactInfoLink} href={"/"} target="_blank" rel="nofollow">{process.env.NEXT_PUBLIC_SITE_URL}</Link></p>
-								</div>
-							</div>
 						</div>
+						<ResumeSubSection header="Skills">
+							{skillChild}
+						</ResumeSubSection>
+						<ResumeSubSection header="Work Experience">
+							{workChildren}
+						</ResumeSubSection>
+						<ResumeSubSection header="Education">
+							{collegeChildren}
+						</ResumeSubSection>
+						<ResumeSubSection header="Projects">
+							{projectChildren}
+						</ResumeSubSection>
 					</div>
-					<ResumeSubSection header="Skills">
-						{skillChild}
-					</ResumeSubSection>
-					<ResumeSubSection header="Work Experience">
-						{workChildren}
-					</ResumeSubSection>
-					<ResumeSubSection header="Education">
-						{collegeChildren}
-					</ResumeSubSection>
-					<ResumeSubSection header="Projects">
-						{projectChildren}
-					</ResumeSubSection>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 

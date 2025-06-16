@@ -1,32 +1,128 @@
-name: Auto-link issues from staging PRs
+name: Populate Master PR with Issues
 
 on:
   pull_request:
-    branches: [master]
-    types: [opened, edited, synchronize]
+    types: [opened, reopened, synchronize]
+    branches:
+      - master
 
 jobs:
-  link-issues:
-    permissions:
-      pull-requests: write
-      contents: read
+  populate_pr_body:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.head.ref == 'staging' && github.event.pull_request.base.ref == 'master'
+
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          node-version: 22
+          # Fetch all history to compare branches correctly and get commit dates
+          fetch-depth: 0
 
-      - name: Install Octokit
-        run: npm install @octokit/rest
+      - name: Get common ancestor and its commit date
+        id: get_merge_base_date
+        run: |
+          # Find the common ancestor between current staging and master.
+          # This commit marks the beginning of changes on 'staging' not yet in 'master'.
+          MERGE_BASE=$(git merge-base origin/master origin/staging)
+          echo "Common ancestor between master and staging: $MERGE_BASE"
+          echo "MERGE_BASE=$MERGE_BASE" >> $GITHUB_ENV
 
-      - name: Append staging issues to PR body
+          # Get the commit date of the merge base in ISO 8601 format for API filtering
+          MERGE_BASE_DATE=$(git show -s --format=%ci "$MERGE_BASE" | xargs -I {} date -Is -d {} | sed 's/\+00:00/Z/')
+          echo "Merge base commit date: $MERGE_BASE_DATE"
+          echo "MERGE_BASE_DATE=$MERGE_BASE_DATE" >> $GITHUB_ENV
+        env:
+          # Ensure TZ is set to UTC for consistent date formatting
+          TZ: "UTC"
+
+      - name: Find Issues from Merged Feature PR Bodies (API based)
+        id: find_issues_from_pr_bodies
+        run: |
+          ISSUE_NUMBERS_FROM_PRS=""
+
+          MERGE_BASE_DATE="${{ env.MERGE_BASE_DATE }}"
+
+          echo "Searching for PRs merged into 'staging' since $MERGE_BASE_DATE..."
+
+          MERGED_PRS_INFO=$(gh pr list --state closed --base staging --json number,body,mergedAt --search "merged:>$MERGE_BASE_DATE" --jq '.[]')
+
+          if [ -z "$MERGED_PRS_INFO" ]; then
+            echo "No PRs merged into 'staging' found since $MERGE_BASE_DATE with relevant closing keywords."
+            exit 0 # Exit early if nothing new to process
+          fi
+
+          while IFS= read -r PR_JSON; do
+            PR_NUMBER=$(echo "$PR_JSON" | jq -r '.number')
+            PR_BODY=$(echo "$PR_JSON" | jq -r '.body')
+            MERGED_AT=$(echo "$PR_JSON" | jq -r '.mergedAt')
+
+            echo "Processing PR #$PR_NUMBER (merged at $MERGED_AT)"
+            
+            if [ -n "$PR_BODY" ]; then
+              echo "Scanning PR #$PR_NUMBER body for closing keywords:"
+              echo "$PR_BODY"
+              TEMP_PR_BODY="$PR_BODY"
+              REGEX='(close[sd]?|fix(e[sd])?|resolve[sd]?)\s+#([0-9]+)'
+              while [[ "$TEMP_PR_BODY" =~ $REGEX ]]; do
+                ISSUE_NUMBERS_FROM_PRS+=" ${BASH_REMATCH[3]}"
+                # Remove the matched part to find more in the same string
+                TEMP_PR_BODY="${TEMP_PR_BODY#*"${BASH_REMATCH[0]}"}"
+              done
+            else
+              echo "PR #$PR_NUMBER has an empty body. Skipping."
+            fi
+          done < <(echo "$MERGED_PRS_INFO")
+
+          # Deduplicate and format the found issue numbers
+          UNIQUE_ALL_ISSUES=$(echo "$ISSUE_NUMBERS_FROM_PRS" | tr ' ' '\n' | sort -u | grep -v '^$' | tr '\n' ',' | sed 's/,$//;s/^,//')
+
+          if [ -n "$UNIQUE_ALL_ISSUES" ]; then
+            echo "Found unique issues from previous PR bodies: $UNIQUE_ALL_ISSUES"
+            echo "issues_to_add=$UNIQUE_ALL_ISSUES" >> $GITHUB_OUTPUT
+          else
+            echo "No issue numbers found in previous PR bodies to add."
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Master PR Body
+        if: steps.find_issues_from_pr_bodies.outputs.issues_to_add != ''
         run: |
-          node .github/scripts/collect-staging-issues.js \
-            staging master \
-            ${{ github.repository }} \
-            ${{ github.event.pull_request.number }}
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          CURRENT_PR_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body')
+
+          MARKER_START="<!-- AUTO-CLOSED-ISSUES:START -->"
+          MARKER_END="<!-- AUTO-CLOSED-ISSUES:END -->"
+
+          # Format the list
+          ISSUES_LIST_FOR_PR=""
+          IFS=',' read -ra ADDR <<< "${{ steps.find_issues_from_pr_bodies.outputs.issues_to_add }}"
+          for i in "${ADDR[@]}"; do
+          ISSUES_LIST_FOR_PR+="- fixes #$i"$'\n'
+          done
+
+          # Construct full replacement block
+          REPLACEMENT="$MARKER_START"$'\n'"$ISSUES_LIST_FOR_PR""$MARKER_END"
+
+          # Replace or insert section
+          if [[ "$CURRENT_PR_BODY" == *"$MARKER_START"* && "$CURRENT_PR_BODY" == *"$MARKER_END"* ]]; then
+          FINAL_PR_BODY=$(awk -v start="$MARKER_START" -v end="$MARKER_END" -v replacement="$REPLACEMENT" '
+              BEGIN { in_block = 0 }
+              $0 ~ start { print replacement; in_block = 1; next }
+              $0 ~ end && in_block { in_block = 0; next }
+              !in_block { print }
+          ' <<< "$CURRENT_PR_BODY")
+          else
+          FINAL_PR_BODY="$CURRENT_PR_BODY"$'\n\n### Issues Closed by This Release\n'"$REPLACEMENT"$'\n'
+          fi
+
+          gh pr edit "$PR_NUMBER" --body "$FINAL_PR_BODY"
+
+
+          echo "Successfully updated PR #$PR_NUMBER body."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
