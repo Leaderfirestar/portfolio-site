@@ -2,9 +2,9 @@ name: Populate Master PR with Issues
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize] # Trigger when a PR is opened, reopened, or updated
+    types: [opened, reopened, synchronize]
     branches:
-      - master # Trigger only for PRs targeting the master branch
+      - master
 
 jobs:
   populate_pr_body:
@@ -13,8 +13,8 @@ jobs:
     if: github.event.pull_request.head.ref == 'staging' && github.event.pull_request.base.ref == 'master'
 
     permissions:
-      contents: read # Needed for git commands
-      pull-requests: write # Essential: Allows updating the PR body
+      contents: read
+      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -66,12 +66,11 @@ jobs:
             
             if [ -n "$PR_BODY" ]; then
               echo "Scanning PR #$PR_NUMBER body for closing keywords:"
-              # echo "$PR_BODY" # Uncomment for debugging PR body content
-
+              echo "$PR_BODY"
+              echo "Hex dump of PR body (first 50 chars):"
+              echo "$PR_BODY" | head -c 50 | xxd -p
               # Use a temporary variable for the regex loop
               TEMP_PR_BODY="$PR_BODY"
-              # --- MODIFIED REGEX HERE ---
-              # Changed '[[:space:]]+' to '\s+' for broader whitespace matching, including NBSP.
               REGEX='(fix|fixes|fixed|close|closes|closed|resolve|resolves|resolved)\s+#([0-9]+)' 
               while [[ "$TEMP_PR_BODY" =~ $REGEX ]]; do
                 ISSUE_NUMBERS_FROM_PRS+=" ${BASH_REMATCH[2]}"
