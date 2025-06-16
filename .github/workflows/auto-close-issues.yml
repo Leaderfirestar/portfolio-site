@@ -68,7 +68,7 @@ jobs:
               TEMP_PR_BODY="$PR_BODY"
               REGEX='(close[sd]?|fix(e[sd])?|resolve[sd]?)\s+#([0-9]+)'
               while [[ "$TEMP_PR_BODY" =~ $REGEX ]]; do
-                ISSUE_NUMBERS_FROM_PRS+=" ${BASH_REMATCH[3]}"
+                ISSUE_NUMBERS_FROM_PRS+=$'\n'${BASH_REMATCH[3]}
                 # Remove the matched part to find more in the same string
                 TEMP_PR_BODY="${TEMP_PR_BODY#*"${BASH_REMATCH[0]}"}"
               done
@@ -78,7 +78,7 @@ jobs:
           done < <(echo "$MERGED_PRS_INFO")
 
           # Deduplicate and format the found issue numbers
-          UNIQUE_ALL_ISSUES=$(echo "$ISSUE_NUMBERS_FROM_PRS" | tr ' ' '\n' | sort -u | grep -v '^$' | tr '\n' ',' | sed 's/,$//;s/^,//')
+          UNIQUE_ALL_ISSUES=$(echo "$ISSUE_NUMBERS_FROM_PRS" | sort -u | grep -v '^$' | paste -sd, -)
 
           if [ -n "$UNIQUE_ALL_ISSUES" ]; then
             echo "Found unique issues from previous PR bodies: $UNIQUE_ALL_ISSUES"
