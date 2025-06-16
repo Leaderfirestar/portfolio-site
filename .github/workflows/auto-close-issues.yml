@@ -9,7 +9,6 @@ on:
 jobs:
   populate_pr_body:
     runs-on: ubuntu-latest
-    # Only run if the head branch is 'staging' and base branch is 'master'
     if: github.event.pull_request.head.ref == 'staging' && github.event.pull_request.base.ref == 'master'
 
     permissions:
@@ -45,7 +44,7 @@ jobs:
         run: |
           ISSUE_NUMBERS_FROM_PRS=""
 
-          MERGE_BASE_DATE="${{ env.MERGE_BASE_DATE }}" # Use the env variable directly
+          MERGE_BASE_DATE="${{ env.MERGE_BASE_DATE }}"
 
           echo "Searching for PRs merged into 'staging' since $MERGE_BASE_DATE..."
 
@@ -56,7 +55,6 @@ jobs:
             exit 0 # Exit early if nothing new to process
           fi
 
-          # Process each merged PR found
           while IFS= read -r PR_JSON; do
             PR_NUMBER=$(echo "$PR_JSON" | jq -r '.number')
             PR_BODY=$(echo "$PR_JSON" | jq -r '.body')
@@ -67,7 +65,6 @@ jobs:
             if [ -n "$PR_BODY" ]; then
               echo "Scanning PR #$PR_NUMBER body for closing keywords:"
               echo "$PR_BODY"
-              # Use a temporary variable for the regex loop
               TEMP_PR_BODY="$PR_BODY"
               REGEX='(close[sd]?|fix(e[sd])?|resolve[sd]?)\s+#([0-9]+)'
               while [[ "$TEMP_PR_BODY" =~ $REGEX ]]; do
@@ -90,7 +87,7 @@ jobs:
             echo "No issue numbers found in previous PR bodies to add."
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required for 'gh pr list'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Master PR Body
         if: steps.find_issues_from_pr_bodies.outputs.issues_to_add != ''
@@ -104,7 +101,6 @@ jobs:
             ISSUES_LIST_FOR_PR+="- fixes #$i"$'\n'
           done
 
-          # Define unique markers to identify and update our section
           MARKER_START="<!-- AUTO-CLOSED-ISSUES:START -->"
           MARKER_END="<!-- AUTO-CLOSED-ISSUES:END -->"
           NEW_SECTION=$'\n\n### Issues Closed by This Release\n'"$MARKER_START"$'\n'"$ISSUES_LIST_FOR_PR"$MARKER_END"$'\n'
@@ -127,4 +123,4 @@ jobs:
 
           echo "Successfully updated PR #$PR_NUMBER body."
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required for 'gh pr edit'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
