@@ -57,7 +57,7 @@ jobs:
           fi
 
           # Process each merged PR found
-          echo "$MERGED_PRS_INFO" | while IFS= read -r PR_JSON; do
+          while IFS= read -r PR_JSON; do
             PR_NUMBER=$(echo "$PR_JSON" | jq -r '.number')
             PR_BODY=$(echo "$PR_JSON" | jq -r '.body')
             MERGED_AT=$(echo "$PR_JSON" | jq -r '.mergedAt')
@@ -71,16 +71,16 @@ jobs:
               echo "$PR_BODY" | head -c 50 | xxd -p
               # Use a temporary variable for the regex loop
               TEMP_PR_BODY="$PR_BODY"
-              REGEX='(fix|fixes|fixed|close|closes|closed|resolve|resolves|resolved).*?#([0-9]+)' 
+              REGEX='(close[sd]?|fix(e[sd])?|resolve[sd]?)\s+#([0-9]+)'
               while [[ "$TEMP_PR_BODY" =~ $REGEX ]]; do
-                ISSUE_NUMBERS_FROM_PRS+=" ${BASH_REMATCH[2]}"
+                ISSUE_NUMBERS_FROM_PRS+=" ${BASH_REMATCH[3]}"
                 # Remove the matched part to find more in the same string
                 TEMP_PR_BODY="${TEMP_PR_BODY#*"${BASH_REMATCH[0]}"}"
               done
             else
               echo "PR #$PR_NUMBER has an empty body. Skipping."
             fi
-          done
+          done < <(echo "$MERGED_PRS_INFO")
 
           # Deduplicate and format the found issue numbers
           UNIQUE_ALL_ISSUES=$(echo "$ISSUE_NUMBERS_FROM_PRS" | tr ' ' '\n' | sort -u | tr '\n' ',' | sed 's/,$//')
