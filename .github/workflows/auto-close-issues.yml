@@ -95,32 +95,33 @@ jobs:
           PR_NUMBER=${{ github.event.pull_request.number }}
           CURRENT_PR_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body')
 
+          MARKER_START="<!-- AUTO-CLOSED-ISSUES:START -->"
+          MARKER_END="<!-- AUTO-CLOSED-ISSUES:END -->"
+
+          # Format the list
           ISSUES_LIST_FOR_PR=""
           IFS=',' read -ra ADDR <<< "${{ steps.find_issues_from_pr_bodies.outputs.issues_to_add }}"
           for i in "${ADDR[@]}"; do
-            ISSUES_LIST_FOR_PR+="- fixes #$i"$'\n'
+          ISSUES_LIST_FOR_PR+="- fixes #$i"$'\n'
           done
 
-          MARKER_START="<!-- AUTO-CLOSED-ISSUES:START -->"
-          MARKER_END="<!-- AUTO-CLOSED-ISSUES:END -->"
-          NEW_SECTION=$'\n\n### Issues Closed by This Release\n'"$MARKER_START"$'\n'"$ISSUES_LIST_FOR_PR"$MARKER_END"$'\n'
+          # Construct full replacement block
+          REPLACEMENT="$MARKER_START"$'\n'"$ISSUES_LIST_FOR_PR""$MARKER_END"
 
-          FINAL_PR_BODY="$CURRENT_PR_BODY"
-
-          # Check if our marked section already exists
+          # Replace or insert section
           if [[ "$CURRENT_PR_BODY" == *"$MARKER_START"* && "$CURRENT_PR_BODY" == *"$MARKER_END"* ]]; then
-            # Replace the existing section between the markers
-            REPLACEMENT=$(printf "%s\n%s%s%s" "$MARKER_START" "$ISSUES_LIST_FOR_PR" "$MARKER_END")
-            FINAL_PR_BODY=$(echo "$CURRENT_PR_BODY" | sed -e "/$MARKER_START/,/$MARKER_END/c\\$REPLACEMENT")
-            echo "Updating existing 'Issues Closed by This Release' section in PR #$PR_NUMBER."
+          FINAL_PR_BODY=$(awk -v start="$MARKER_START" -v end="$MARKER_END" -v replacement="$REPLACEMENT" '
+              BEGIN { in_block = 0 }
+              $0 ~ start { print replacement; in_block = 1; next }
+              $0 ~ end && in_block { in_block = 0; next }
+              !in_block { print }
+          ' <<< "$CURRENT_PR_BODY")
           else
-            # Append the new section if it doesn't exist
-            FINAL_PR_BODY="$CURRENT_PR_BODY$NEW_SECTION"
-            echo "Adding new 'Issues Closed by This Release' section to PR #$PR_NUMBER."
+          FINAL_PR_BODY="$CURRENT_PR_BODY"$'\n\n### Issues Closed by This Release\n'"$REPLACEMENT"$'\n'
           fi
 
-          echo "Updating PR #$PR_NUMBER body..."
           gh pr edit "$PR_NUMBER" --body "$FINAL_PR_BODY"
+
 
           echo "Successfully updated PR #$PR_NUMBER body."
         env:
