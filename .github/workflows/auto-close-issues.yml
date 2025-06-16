@@ -110,7 +110,8 @@ jobs:
           # Check if our marked section already exists
           if [[ "$CURRENT_PR_BODY" == *"$MARKER_START"* && "$CURRENT_PR_BODY" == *"$MARKER_END"* ]]; then
             # Replace the existing section between the markers
-            FINAL_PR_BODY=$(echo "$CURRENT_PR_BODY" | sed -e "/$MARKER_START/,/$MARKER_END/c\\$MARKER_START\n$ISSUES_LIST_FOR_PR$MARKER_END")
+            REPLACEMENT=$(printf "%s\n%s%s%s" "$MARKER_START" "$ISSUES_LIST_FOR_PR" "$MARKER_END")
+            FINAL_PR_BODY=$(echo "$CURRENT_PR_BODY" | sed -e "/$MARKER_START/,/$MARKER_END/c\\$REPLACEMENT")
             echo "Updating existing 'Issues Closed by This Release' section in PR #$PR_NUMBER."
           else
             # Append the new section if it doesn't exist
