@@ -107,7 +107,7 @@ jobs:
           # Define unique markers to identify and update our section
           MARKER_START="<!-- AUTO-CLOSED-ISSUES:START -->"
           MARKER_END="<!-- AUTO-CLOSED-ISSUES:END -->"
-          NEW_SECTION="\n\n### Issues Closed by This Release\n$MARKER_START\n$ISSUES_LIST_FOR_PR$MARKER_END\n"
+          NEW_SECTION=$'\n\n### Issues Closed by This Release\n'"$MARKER_START"$'\n'"$ISSUES_LIST_FOR_PR"$MARKER_END"$'\n'
 
           FINAL_PR_BODY="$CURRENT_PR_BODY"
 
