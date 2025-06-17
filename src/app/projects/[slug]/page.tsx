@@ -104,6 +104,10 @@ async function ProjectPage({ params }: { params: Params; }) {
 						type="application/ld+json"
 						dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
 					/>
+					<link
+						rel="canonical"
+						href={`${process.env.NEXT_PUBLIC_SITE_URL}/projects/${slug}`}
+					/>
 				</Head>
 			)}
 			<div>
