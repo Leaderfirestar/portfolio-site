@@ -23,6 +23,12 @@ export const generateMetadata = async ({ params }: { params: Params; }): Promise
     } else if (response.data.length === 0) {
         return { title: "Project Not Found" };
     }
+    const jsonLd: JsonLd<CreativeWork> = {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        "@id": `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${response.data[0].slug}#project`,
+        "url": response.data[0].projectUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${response.data[0].slug}`
+    };
     const metadata: Metadata = {
         ...response.data[0].page_metadata,
         openGraph: {
@@ -48,6 +54,9 @@ export const generateMetadata = async ({ params }: { params: Params; }): Promise
                     alt: response.data[0].image?.alternativeText || response.data[0].title,
                 },
             ],
+        },
+        other: {
+            "application/ld+json": JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
         },
     };
     return metadata;
@@ -84,20 +93,10 @@ async function ProjectPage({ params }: { params: Params; }) {
     }
     const project = response.data[0];
 
-    const jsonLd: JsonLd<CreativeWork> = {
-        "@context": "https://schema.org",
-        "@type": "CreativeWork",
-        "@id": `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${project.slug}#project`,
-        "url": project.projectUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${project.slug}`
-    };
     return (
         <>
             {process.env.VERCEL_ENV === "production" && (
                 <Head>
-                    <script
-                        type="application/ld+json"
-                        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
-                    />
                     <link
                         rel="canonical"
                         href={`${process.env.NEXT_PUBLIC_SITE_URL}/projects/${slug}`}
