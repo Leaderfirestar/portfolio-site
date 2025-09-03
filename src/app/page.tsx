@@ -80,10 +80,13 @@ export default async function Home() {
                 <div className={styles.container}>
                     <div className={styles.textContainer}>
                         <h1>{personalInfo.firstName} {personalInfo.lastName} | {personalInfo.jobTitle}</h1>
+                        <h2 className={styles.sectionHeading}>Explore my work!</h2>
                         <RichTextRenderer nodes={personalInfo.bio} />
-                        <ul className={styles.quoteList}>
-                            {personalInfo.quotes.map((quote) => <li key={quote.id} className={styles.quoteListItem}>{quote.value}</li>)}
-                        </ul>
+                        <div className={styles.ctaContainer}>
+                            <a className={`${styles.ctaItem} ${styles.primary}`} style={{ animationDelay: "0s" }} href="/projects">View My Projects</a>
+                            <a className={`${styles.ctaItem} ${styles.secondary}`} style={{ animationDelay: "0.1s" }} href="/resume" target="_blank" rel="noopener noreferrer">Download My Resume</a>
+                            <a className={`${styles.ctaItem} ${styles.secondary}`} style={{ animationDelay: "0.2s" }} href={`mailto:${personalInfo.email}`}>Contact Me</a>
+                        </div>
                     </div>
                     {personalInfo.profile?.url && (
                         <div className={styles.profileContainer}>

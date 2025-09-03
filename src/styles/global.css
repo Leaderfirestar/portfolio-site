@@ -55,11 +55,10 @@ h3 {
 
 /* Nav */
 nav {
-	margin-top: 5px;
 	display: flex;
-	flex-direction: row;
+	/* flex-direction: row; */
 	justify-content: flex-end;
-	column-gap: 10px;
+	gap: 10px;
 }
 
 a {
