@@ -24,10 +24,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
                     <div className={styles.iconContainer}>
                         <a href={personalInfo.github} target="_blank" rel="nofollow">
-                            <Image width={49} height={48} src="/github.svg" alt={`${personalInfo.firstName} GitHub`} />
+                            <Image width={49} height={48} src="/github.svg" alt={`${personalInfo.firstName} ${personalInfo.lastName}'s gitHub`} />
                         </a>
                         <a href={personalInfo.linkedin} target="_blank" rel="nofollow">
-                            <Image width={49} height={49} src="/linkedin.webp" alt={`${personalInfo.firstName} LinkedIn`} />
+                            <Image width={49} height={49} src="/linkedin.webp" alt={`${personalInfo.firstName} ${personalInfo.lastName}'s linkedIn`} />
                         </a>
                     </div>
                 </footer>
