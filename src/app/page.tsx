@@ -7,6 +7,7 @@ import Head from "next/head";
 import { JsonLd } from "@/lib/defintions";
 import { Person } from "schema-dts";
 import { fetchCollegeInfo } from "@/lib/college";
+import { fetchResume } from "@/lib/resume";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
     if (process.env.VERCEL_ENV !== "production") return;
@@ -45,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata | undefined> {
 }
 
 export default async function Home() {
-    const [personalInfo, colleges] = await Promise.all([fetchPersonalInfo(), fetchCollegeInfo()]);
+    const [personalInfo, colleges, resume] = await Promise.all([fetchPersonalInfo(), fetchCollegeInfo(), fetchResume()]);
     const jsonLd: JsonLd<Person> = {
         "@context": "https://schema.org",
         "@type": "Person",
@@ -84,7 +85,7 @@ export default async function Home() {
                         <RichTextRenderer nodes={personalInfo.bio} />
                         <div className={styles.ctaContainer}>
                             <a className={`${styles.ctaItem} ${styles.primary}`} style={{ animationDelay: "0s" }} href="/projects">View My Projects</a>
-                            <a className={`${styles.ctaItem} ${styles.secondary}`} style={{ animationDelay: "0.1s" }} href="/resume" target="_blank" rel="noopener noreferrer">Download My Resume</a>
+                            <a className={`${styles.ctaItem} ${styles.secondary}`} style={{ animationDelay: "0.1s" }} href={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${resume.resume.url}`} download={resume.resume.name}>Download My Resume</a>
                             <a className={`${styles.ctaItem} ${styles.secondary}`} style={{ animationDelay: "0.2s" }} href={`mailto:${personalInfo.email}`}>Contact Me</a>
                         </div>
                     </div>
