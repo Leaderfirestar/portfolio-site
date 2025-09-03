@@ -1,82 +1,239 @@
-/* Page.tsx */
-
 .container {
-	display: flex;
-	flex-direction: row;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-top: 40px;
+    flex-wrap: wrap; /* allows wrapping if needed */
 }
 
 .textContainer {
-	display: flex;
-	flex-direction: column;
-}
-
-.quoteList {
-	display: flex;
-	flex-direction: row;
-	padding: 0px;
-	justify-content: space-around;
-}
-
-.quoteListItem {
-	list-style-type: none;
-}
-
-.profileContainer {
-	display: flex;
-	flex-direction: column;
+    flex: 1;
 }
 
 .profile {
-	align-self: flex-end;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Phones */
-
-@media only screen and (max-width: 480px) {
-	.container {
-		display: flex;
-		flex-direction: column;
-	}
-	.profile {
-		width: 300px;
-		height: 200px
-	}
-
-	.quoteList {
-		flex-direction: column;
-		row-gap: 10px;
-	}
+.profileContainer {
+    margin-top: 20px;
 }
 
-/* Layout.tsx */
-
-.pageContainer {
-	display: grid;
-	min-height: 100%;
-	grid-template-rows: auto 1fr auto;
+/* Desktop Top Nav */
+.nav.topNav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
 }
 
-.nav {
-	margin: 20px 0px;
+.nav.topNav a {
+    color: #EDF6F9;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: rgba(255,255,255,0.05);
+    transition: all 0.3s ease;
 }
 
+.nav.topNav a:hover {
+    background-color: #E29578;
+    color: #FFF;
+}
+
+.nav.topNav a:focus {
+    outline: 2px solid #FFDDD2;
+    outline-offset: 2px;
+}
+
+/* Bottom Nav (mobile) */
+.bottomNav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #006D77;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    z-index: 2;
+    height: 60px;
+}
+
+.navItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #EDF6F9;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.2s;
+}
+
+.nav a.selected, .navItem.selected {
+    background-color: #E29578;
+    color: #FFF;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    cursor: default;
+}
+
+.navItem span {
+    margin-top: 4px;
+    font-size: 0.75rem;
+}
+
+.navItem:hover, .navItem:focus {
+    color: #FFDDD2;
+}
+
+/* Footer */
 .contactInfoContainer {
-	display: flex;
-	flex-direction: column;
-	justify-self: center;
-	align-self:flex-start;
-	text-align: center;
-	margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-self:flex-start;
+    text-align: center;
 }
 
 .contactParagraph {
-	margin: 0px;
+    margin: 0px;
 }
 
 .iconContainer {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	gap: 10px;
-	margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+/* CTA Buttons */
+.ctaContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.ctaItem {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    animation: bounceIn 0.6s ease-out;
+}
+
+.ctaItem:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Primary CTA */
+.ctaItem.primary {
+    background-color: #E29578;
+    color: #FFF;
+}
+
+.ctaItem.primary:hover {
+    background-color: #FFDDD2;
+    color: #073B4C;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+/* Secondary CTA */
+.ctaItem.secondary {
+    border: 2px solid #EDF6F9;
+    color: #EDF6F9;
+    background: transparent;
+}
+
+.ctaItem.secondary:hover {
+    background-color: rgba(237, 246, 249, 0.1);
+}
+
+/* CTA Animation */
+@keyframes bounceIn {
+    0% { transform: scale(0.95); opacity: 0; }
+    60% { transform: scale(1.05); opacity: 1; }
+    80% { transform: scale(0.98); }
+    100% { transform: scale(1); }
+}
+
+/* Phones */
+@media only screen and (max-width: 480px) {
+    .container {
+        flex-direction: column;
+        gap: 25px;
+        margin-top: 20px;
+    }
+
+    .profile {
+        width: 300px;
+        height: auto;
+        margin-top: 0;
+    }
+
+    .ctaContainer {
+        flex-direction: column;
+        align-items: center;
+        row-gap: 10px;
+    }
+
+    .contactInfoContainer {
+        margin-bottom: 70px;
+    }
+
+    .textContainer {
+        padding: 0 15px;
+    }
+
+    .nav {
+        gap: 0;
+    }
+
+    .navItem {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #EDF6F9;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        border-right: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .navItem:last-child {
+        border-right: none;
+    }
+
+    /* Selected state for mobile nav */
+    .navItem.selected {
+        background-color: #E29578; /* coral highlight */
+        color: #FFF;
+        font-weight: bold;
+        border-right: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* Hover/focus effect for better feedback */
+    .navItem:hover, .navItem:focus {
+        background-color: rgba(255,255,255,0.1);
+    }
+
+    /* Hide top nav, show bottom nav */
+    .nav.topNav {
+        display: none;
+    }
+    
+    .bottomNav {
+        display: flex;
+        justify-content: space-between;
+    }
 }
