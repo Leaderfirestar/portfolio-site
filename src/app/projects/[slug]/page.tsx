@@ -21,12 +21,6 @@ export const generateMetadata = async ({ params }: PageProps<`/projects/[slug]`>
 	} else if (response.data.length === 0) {
 		return { title: "Project Not Found" };
 	}
-	const jsonLd: JsonLd<CreativeWork> = {
-		"@context": "https://schema.org",
-		"@type": "CreativeWork",
-		"@id": `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${response.data[0].slug}#project`,
-		"url": response.data[0].projectUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${response.data[0].slug}`
-	};
 	const metadata: Metadata = {
 		...response.data[0].page_metadata,
 		metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
@@ -53,10 +47,7 @@ export const generateMetadata = async ({ params }: PageProps<`/projects/[slug]`>
 					alt: response.data[0].image?.alternativeText || response.data[0].title,
 				},
 			],
-		},
-		other: {
-			"application/ld+json": JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
-		},
+		}
 	};
 	return metadata;
 };
@@ -92,6 +83,13 @@ async function ProjectPage({ params }: PageProps<`/projects/[slug]`>) {
 	}
 	const project = response.data[0];
 
+	const jsonLd: JsonLd<CreativeWork> = {
+		"@context": "https://schema.org",
+		"@type": "CreativeWork",
+		"@id": `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${response.data[0].slug}#project`,
+		"url": response.data[0].projectUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${response.data[0].slug}`
+	};
+
 	return (
 		<>
 			{process.env.VERCEL_ENV === "production" && (
@@ -99,6 +97,10 @@ async function ProjectPage({ params }: PageProps<`/projects/[slug]`>) {
 					<link
 						rel="canonical"
 						href={`${process.env.NEXT_PUBLIC_SITE_URL}/projects/${slug}`}
+					/>
+					<script
+						type="application/ld+json"
+						dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
 					/>
 				</Head>
 			)}

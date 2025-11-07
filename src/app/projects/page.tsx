@@ -5,10 +5,33 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { CreativeWork } from "schema-dts";
 import styles from "./page.module.css";
+import Head from "next/head";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
 	if (process.env.VERCEL_ENV !== "production") return;
 	const [projectPage, projects] = await Promise.all([fetchProjectPage(), fetchProjects()]);
+	const metadata: Metadata = {
+		...projectPage.page_metadata,
+		metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
+		openGraph: {
+			title: projectPage.page_metadata.title,
+			description: projectPage.page_metadata.description,
+			url: `${process.env.NEXT_PUBLIC_SITE_URL}/projects`,
+			siteName: projectPage.page_metadata.applicationName,
+			type: "website",
+		},
+		twitter: {
+			title: projectPage.page_metadata.title,
+			description: projectPage.page_metadata.description,
+			card: "summary_large_image",
+		}
+	};
+	return metadata;
+}
+
+async function Projects() {
+	const [projects, projectPage] = await Promise.all([fetchProjects(), fetchProjectPage()]);
+	const finalProjectListElements = buildProjectList(projects);
 	const jsonLd: JsonLd<CreativeWork> = {
 		"@context": "https://schema.org",
 		"@type": "Collection",
@@ -25,41 +48,26 @@ export async function generateMetadata(): Promise<Metadata | undefined> {
 			}
 		}))
 	};
-	const metadata: Metadata = {
-		...projectPage.page_metadata,
-		metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
-		openGraph: {
-			title: projectPage.page_metadata.title,
-			description: projectPage.page_metadata.description,
-			url: `${process.env.NEXT_PUBLIC_SITE_URL}/projects`,
-			siteName: projectPage.page_metadata.applicationName,
-			type: "website",
-		},
-		twitter: {
-			title: projectPage.page_metadata.title,
-			description: projectPage.page_metadata.description,
-			card: "summary_large_image",
-		},
-		other: {
-			"application/ld+json": JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
-		},
-	};
-	return metadata;
-}
-
-async function Projects() {
-	const [projects, projectPage] = await Promise.all([fetchProjects(), fetchProjectPage()]);
-	const finalProjectListElements = buildProjectList(projects);
 	return (
-		<div>
-			<div className={styles.titleContainer}>
-				<h1>{projectPage.name}</h1>
-				<h2>{projectPage.description}</h2>
+		<>
+			{process.env.VERCEL_ENV === "production" && (
+				<Head>
+					<script
+						type="application/ld+json"
+						dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
+					/>
+				</Head>
+			)}
+			<div>
+				<div className={styles.titleContainer}>
+					<h1>{projectPage.name}</h1>
+					<h2>{projectPage.description}</h2>
+				</div>
+				<ul className={styles.projectList}>
+					{finalProjectListElements}
+				</ul>
 			</div>
-			<ul className={styles.projectList}>
-				{finalProjectListElements}
-			</ul>
-		</div>
+		</>
 	);
 }
 
