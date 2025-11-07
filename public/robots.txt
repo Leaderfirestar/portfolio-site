@@ -1,9 +1,9 @@
 # *
 User-agent: *
-Allow: /
+Disallow: /
 
 # Host
-Host: http://localhost:3000
+Host: https://portfolio.eric-webb.dev
 
 # Sitemaps
-Sitemap: http://localhost:3000/sitemap.xml
+Sitemap: https://portfolio.eric-webb.dev/sitemap.xml
