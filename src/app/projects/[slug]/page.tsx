@@ -8,9 +8,7 @@ import { JsonLd } from '@/lib/defintions';
 import { CreativeWork } from 'schema-dts';
 import Head from 'next/head';
 
-type Params = Promise<{ slug: string; }>;
-
-export const generateMetadata = async ({ params }: { params: Params; }): Promise<Metadata | undefined> => {
+export const generateMetadata = async ({ params }: PageProps<`/projects/[slug]`>): Promise<Metadata | undefined> => {
 	if (process.env.VERCEL_ENV !== "production") return;
 	const { slug } = await params;
 	const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -81,7 +79,7 @@ export async function generateStaticParams() {
 // 	ssr: false, // This ensures the component is only rendered on the client
 // });
 
-async function ProjectPage({ params }: { params: Params; }) {
+async function ProjectPage({ params }: PageProps<`/projects/[slug]`>) {
 	const { slug } = await params;
 	const response = await fetchProjectBySlug(slug);
 
