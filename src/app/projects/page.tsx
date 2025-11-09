@@ -9,7 +9,7 @@ import Head from "next/head";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
 	if (process.env.VERCEL_ENV !== "production") return;
-	const [projectPage, projects] = await Promise.all([fetchProjectPage(), fetchProjects()]);
+	const projectPage = await fetchProjectPage();
 	const metadata: Metadata = {
 		...projectPage.page_metadata,
 		metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
@@ -49,25 +49,19 @@ async function Projects() {
 		}))
 	};
 	return (
-		<>
-			{process.env.VERCEL_ENV === "production" && (
-				<Head>
-					<script
-						type="application/ld+json"
-						dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
-					/>
-				</Head>
-			)}
-			<div>
-				<div className={styles.titleContainer}>
-					<h1>{projectPage.name}</h1>
-					<h2>{projectPage.description}</h2>
-				</div>
-				<ul className={styles.projectList}>
-					{finalProjectListElements}
-				</ul>
+		<div>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
+			/>
+			<div className={styles.titleContainer}>
+				<h1>{projectPage.name}</h1>
+				<h2>{projectPage.description}</h2>
 			</div>
-		</>
+			<ul className={styles.projectList}>
+				{finalProjectListElements}
+			</ul>
+		</div>
 	);
 }
 
