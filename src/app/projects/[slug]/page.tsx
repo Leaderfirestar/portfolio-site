@@ -7,9 +7,7 @@ import Image from 'next/image';
 import { CreativeWork } from 'schema-dts';
 import styles from "./page.module.css";
 
-type Params = Promise<{ slug: string; }>;
-
-export const generateMetadata = async ({ params }: { params: Params; }): Promise<Metadata | undefined> => {
+export const generateMetadata = async ({ params }: PageProps<`/projects/[slug]`>): Promise<Metadata | undefined> => {
 	if (process.env.VERCEL_ENV !== "production") return;
 	const { slug } = await params;
 	const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -24,6 +22,7 @@ export const generateMetadata = async ({ params }: { params: Params; }): Promise
 	}
 	const metadata: Metadata = {
 		...response.data[0].page_metadata,
+		metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
 		openGraph: {
 			title: response.data[0].page_metadata.title,
 			description: response.data[0].page_metadata.description,
@@ -47,7 +46,7 @@ export const generateMetadata = async ({ params }: { params: Params; }): Promise
 					alt: response.data[0].image?.alternativeText || response.data[0].title,
 				},
 			],
-		},
+		}
 	};
 	return metadata;
 };
@@ -66,7 +65,7 @@ export async function generateStaticParams() {
 	});
 };
 
-async function ProjectPage({ params }: { params: Params; }) {
+async function ProjectPage({ params }: PageProps<`/projects/[slug]`>) {
 	const { slug } = await params;
 	const response = await fetchProjectBySlug(slug);
 

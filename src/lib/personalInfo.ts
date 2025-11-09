@@ -3,8 +3,8 @@ import { PersonalInfo } from "./defintions";
 import qs from 'qs';
 
 interface QueryResponse {
-    data: PersonalInfo;
-    meta: {};
+	data: PersonalInfo;
+	meta: {};
 }
 
 /**
@@ -13,18 +13,18 @@ interface QueryResponse {
  * @returns All personal info and related documents
  */
 export async function fetchPersonalInfo(): Promise<PersonalInfo> {
-    const query = qs.stringify({
-        populate: {
-            page_metadata: true,
-            profile: true,
-        }
-    }, { encodeValuesOnly: true });
-    const url = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/personal-info?${query}`;
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error('Failed to fetch personal data');
-    }
+	const query = qs.stringify({
+		populate: {
+			page_metadata: true,
+			profile: true,
+		}
+	}, { encodeValuesOnly: true });
+	const url = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/personal-info?${query}`;
+	const response = await fetch(url);
+	if (!response.ok) {
+		throw new Error('Failed to fetch personal data');
+	}
 
-    const json = await response.json() as QueryResponse;
-    return json.data;
+	const json = await response.json() as QueryResponse;
+	return json.data;
 }

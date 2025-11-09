@@ -7,12 +7,14 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Person } from "schema-dts";
 import styles from "./page.module.css";
+import Head from "next/head";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
 	if (process.env.VERCEL_ENV !== "production") return;
 	const resume = await fetchResume();
 	const metadata: Metadata = {
 		...resume.page_metadata,
+		metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
 		openGraph: {
 			title: resume.page_metadata.title,
 			description: resume.page_metadata.description,

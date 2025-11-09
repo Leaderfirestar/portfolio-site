@@ -5,12 +5,14 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { CreativeWork } from "schema-dts";
 import styles from "./page.module.css";
+import Head from "next/head";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
 	if (process.env.VERCEL_ENV !== "production") return;
 	const projectPage = await fetchProjectPage();
 	const metadata: Metadata = {
 		...projectPage.page_metadata,
+		metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
 		openGraph: {
 			title: projectPage.page_metadata.title,
 			description: projectPage.page_metadata.description,
