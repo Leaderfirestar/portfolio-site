@@ -86,56 +86,52 @@ async function ProjectPage({ params }: PageProps<`/projects/[slug]`>) {
 	};
 
 	return (
-		<div>
+		<div className={styles.container}>
 			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
 			/>
-			<div className={styles.titleContainer}>
-				{project.projectUrl ? (
-					<a href={project.projectUrl} className={styles.projectUrl} target="_blank">
-						<h1 className={styles.projectTitle}>{project.title}</h1>
-						<Image height={24} width={24} src={"/newTab.svg"} alt={`Link to ${project.title}`} />
-					</a>
-				) : (
-					<h1>{project.title}</h1>
-				)}
+			<div className={styles.header}>
+				<div className={styles.titleRow}>
+					{project.projectUrl ? (
+						<a href={project.projectUrl} target="_blank" className={styles.projectLink}>
+							<h1>{project.title}</h1>
+							<Image src="/newTab.svg" width={20} height={20} alt="" />
+						</a>
+					) : (
+						<h1>{project.title}</h1>
+					)}
+				</div>
 				{project.githubUrl && (
-					<a href={project.githubUrl} className={styles.githubLogo} target="_blank" rel="nofollow">
-						<Image
-							width={49}
-							height={48}
-							alt="Github Repository"
-							src={"/github.svg"}
-						/>
+					<a href={project.githubUrl} target="_blank" className={styles.githubLink}>
+						<Image src="/github.svg" width={32} height={32} alt="GitHub" />
 					</a>
 				)}
 			</div>
-			{project.gallery && project.gallery?.length > 0 && (
-				<div>
+			{project.gallery?.length > 0 && (
+				<div className={styles.mediaSection}>
 					<Carousel gallery={project.gallery || []} />
 				</div>
 			)}
-			<div>
+			<section className={`${styles.techSection} ${styles.content}`}>
 				<h2>Technologies Used</h2>
-				<div className={styles.technologyUsedIconContainer}>
+				<div className={styles.techGrid}>
 					{project.technologies.map((tech) => (
-						<div key={tech.id} className={styles.technologyContainer}>
-							<div>
-								<Image
-									src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${tech.logo?.url}`}
-									width={96}
-									height={96}
-									alt={tech.logo?.alternativeText || ""}
-									className={styles.technologyImage}
-								/>
-							</div>
+						<div key={tech.id} className={styles.techCard}>
+							<Image
+								src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${tech.logo?.url}`}
+								width={64}
+								height={64}
+								alt={tech.name}
+							/>
 							<span>{tech.name}</span>
 						</div>
 					))}
 				</div>
-			</div>
-			<RichTextRenderer nodes={project.description} />
+			</section>
+			<section className={`${styles.description} ${styles.content}`}>
+				<RichTextRenderer nodes={project.description} />
+			</section>
 		</div>
 	);
 };
