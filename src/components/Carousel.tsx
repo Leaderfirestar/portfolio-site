@@ -11,7 +11,6 @@ interface CarouselProps {
 
 function Carousel({ gallery }: CarouselProps) {
 	const [index, setIndex] = useState(0);
-	const media = gallery[index];
 
 	const scrollNext = useCallback(() => {
 		let newIndex = index + 1;
