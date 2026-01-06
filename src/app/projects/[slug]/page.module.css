@@ -1,36 +1,88 @@
-.titleContainer {
+.container {
+	max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 24px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.05);
+    padding: 20px 24px;
+    border-radius: 16px;
+    margin-bottom: 32px;
+}
+
+.projectLink {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.githubLink {
+    opacity: 0.85;
+    transition: transform 0.2s ease;
+}
+
+.githubLink:hover {
+    transform: translateY(-2px);
+}
+
+.mediaSection {
+    margin: 40px 0;
+    padding: 24px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 20px;
 	display: flex;
-	flex-direction: row;
+	justify-content: center;
 }
 
-.projectUrl {
-	text-decoration: none;
-	display: flex;
-	flex-direction: row;
+.techSection {
+    margin: 40px 0;
 }
 
-.projectTitle {
-	color: #FFDDD2;
+.techGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
 }
 
-.githubLogo {
-	margin-left: 20px;
+.techCard {
+    background: rgba(255,255,255,0.06);
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
 }
 
-.technologyUsedIconContainer {
-	display: flex;
-	flex-direction: row;
-	overflow-x: auto;
-	column-gap: 5px;
-	max-width: calc(100vw - 25vw);
+.techCard span {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.85rem;
 }
 
-.technologyContainer {
-	display: flex;
-	flex-direction: column;
-	text-align: center;
+.description {
+    margin: 0 auto;
+    line-height: 1.75;
 }
 
-.technologyImage {
-	background-color: #FFF;
+.description p {
+    margin-bottom: 1.25rem;
+}
+
+.description ul,
+.description ol {
+    margin-left: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.description h2,
+.description h3 {
+    margin-top: 2.5rem;
+}
+
+.content {
+    margin: 0 auto;
 }

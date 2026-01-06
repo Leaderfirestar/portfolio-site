@@ -1,13 +1,12 @@
-import styles from "./page.module.css";
 import RichTextRenderer from "@/components/RichTextRenderer";
+import { fetchCollegeInfo } from "@/lib/college";
+import { JsonLd } from "@/lib/defintions";
 import { fetchPersonalInfo } from "@/lib/personalInfo";
+import { fetchResume } from "@/lib/resume";
 import { Metadata } from "next";
 import Image from "next/image";
-import Head from "next/head";
-import { JsonLd } from "@/lib/defintions";
 import { Person } from "schema-dts";
-import { fetchCollegeInfo } from "@/lib/college";
-import { fetchResume } from "@/lib/resume";
+import styles from "./page.module.css";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
 	if (process.env.VERCEL_ENV !== "production") return;

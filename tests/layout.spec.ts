@@ -35,7 +35,7 @@ test("Navbar and footer exist on all pages", async ({ page, request }) => {
 });
 
 test("All nav links work", async ({ page }) => {
-	page.goto("/");
+	await page.goto("/");
 	for (const path of pages) {
 		const name = path === "/" ? "Home" : path.slice(1).charAt(0).toUpperCase() + path.slice(2);
 		await page.getByRole("navigation").getByRole("link", { name }).click();
