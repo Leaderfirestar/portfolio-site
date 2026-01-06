@@ -5,7 +5,6 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { CreativeWork } from "schema-dts";
 import styles from "./page.module.css";
-import Head from "next/head";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
 	if (process.env.VERCEL_ENV !== "production") return;
