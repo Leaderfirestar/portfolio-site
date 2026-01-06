@@ -9,18 +9,17 @@ import { Person } from "schema-dts";
 import styles from "./page.module.css";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
-	if (process.env.VERCEL_ENV !== "production") return;
 	const personalInfo = await fetchPersonalInfo();
 	const metadata: Metadata = {
 		...personalInfo.page_metadata,
-		metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
+		metadataBase: new URL(`${process.env.NEXT_PUBLIC_CANONICAL_URL}`),
 		alternates: {
-			canonical: `${process.env.NEXT_PUBLIC_SITE_URL}`,
+			canonical: `/`,
 		},
 		openGraph: {
 			title: personalInfo.page_metadata.title,
 			description: personalInfo.page_metadata.description,
-			url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
+			url: `${process.env.NEXT_PUBLIC_CANONICAL_URL}`,
 			siteName: personalInfo.page_metadata.applicationName,
 			type: "website",
 			images: [
@@ -50,10 +49,10 @@ export default async function Home() {
 	const jsonLd: JsonLd<Person> = {
 		"@context": "https://schema.org",
 		"@type": "Person",
-		"@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#author`,
+		"@id": `${process.env.NEXT_PUBLIC_CANONICAL_URL}/#author`,
 		name: `${personalInfo.firstName} ${personalInfo.lastName}`,
 		jobTitle: personalInfo.jobTitle,
-		url: process.env.NEXT_PUBLIC_SITE_URL,
+		url: process.env.NEXT_PUBLIC_CANONICAL_URL,
 		image: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${personalInfo.profile?.url}`,
 		sameAs: [
 			personalInfo.github,
