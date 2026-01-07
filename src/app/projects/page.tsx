@@ -7,11 +7,12 @@ import { CreativeWork } from "schema-dts";
 import styles from "./page.module.css";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
-	if (process.env.VERCEL_ENV !== "production") return;
 	const projectPage = await fetchProjectPage();
 	const metadata: Metadata = {
 		...projectPage.page_metadata,
-		metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
+		alternates: {
+			canonical: `/projects`,
+		},
 		openGraph: {
 			title: projectPage.page_metadata.title,
 			description: projectPage.page_metadata.description,
@@ -36,14 +37,14 @@ async function Projects() {
 		"@type": "Collection",
 		"@graph": projects.map<CreativeWork>((project) => ({
 			"@type": "CreativeWork",
-			"@id": `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${project.slug}#project`,
+			"@id": `${process.env.NEXT_PUBLIC_CANONICAL_URL}/projects/${project.slug}#project`,
 			"name": project.title,
 			"description": project.shortDescription,
-			"url": `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${project.slug}`,
+			"url": `${process.env.NEXT_PUBLIC_CANONICAL_URL}/projects/${project.slug}`,
 			"image": `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${project.image?.url}`,
 			"author": {
 				"@type": "Person",
-				"@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#author`,
+				"@id": `${process.env.NEXT_PUBLIC_CANONICAL_URL}/#author`,
 			}
 		}))
 	};

@@ -12,7 +12,6 @@ export async function generateMetadata(): Promise<Metadata | undefined> {
 	const personalInfo = await fetchPersonalInfo();
 	const metadata: Metadata = {
 		...personalInfo.page_metadata,
-		metadataBase: new URL(`${process.env.NEXT_PUBLIC_CANONICAL_URL}`),
 		alternates: {
 			canonical: `/`,
 		},
