@@ -8,7 +8,6 @@ import { CreativeWork } from 'schema-dts';
 import styles from "./page.module.css";
 
 export const generateMetadata = async ({ params }: PageProps<`/projects/[slug]`>): Promise<Metadata | undefined> => {
-	if (process.env.VERCEL_ENV !== "production") return;
 	const { slug } = await params;
 	const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 
@@ -22,11 +21,13 @@ export const generateMetadata = async ({ params }: PageProps<`/projects/[slug]`>
 	}
 	const metadata: Metadata = {
 		...response.data[0].page_metadata,
-		metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
+		alternates: {
+			canonical: `/projects/${slug}`,
+		},
 		openGraph: {
 			title: response.data[0].page_metadata.title,
 			description: response.data[0].page_metadata.description,
-			url: `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${slug}`,
+			url: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/projects/${slug}`,
 			siteName: response.data[0].page_metadata.applicationName,
 			type: "website",
 			images: [
@@ -81,8 +82,8 @@ async function ProjectPage({ params }: PageProps<`/projects/[slug]`>) {
 	const jsonLd: JsonLd<CreativeWork> = {
 		"@context": "https://schema.org",
 		"@type": "CreativeWork",
-		"@id": `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${response.data[0].slug}#project`,
-		"url": response.data[0].projectUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${response.data[0].slug}`
+		"@id": `${process.env.NEXT_PUBLIC_CANONICAL_URL}/projects/${response.data[0].slug}#project`,
+		"url": response.data[0].projectUrl || `${process.env.NEXT_PUBLIC_CANONICAL_URL}/projects/${response.data[0].slug}`
 	};
 
 	return (

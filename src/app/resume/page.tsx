@@ -7,18 +7,18 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Person } from "schema-dts";
 import styles from "./page.module.css";
-import Head from "next/head";
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
-	if (process.env.VERCEL_ENV !== "production") return;
 	const resume = await fetchResume();
 	const metadata: Metadata = {
 		...resume.page_metadata,
-		metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
+		alternates: {
+			canonical: `/resume`,
+		},
 		openGraph: {
 			title: resume.page_metadata.title,
 			description: resume.page_metadata.description,
-			url: `${process.env.NEXT_PUBLIC_SITE_URL}/resume`,
+			url: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/resume`,
 			siteName: resume.page_metadata.applicationName,
 			type: "website",
 		},
@@ -45,7 +45,7 @@ async function Resume() {
 	const jsonLd: JsonLd<Person> = {
 		"@context": "https://schema.org",
 		"@type": "Person",
-		"@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#author`,
+		"@id": `${process.env.NEXT_PUBLIC_CANONICAL_URL}/#author`,
 	};
 	return (
 		<div className={styles.container}>
