@@ -87,12 +87,12 @@ async function ProjectPage({ params }: PageProps<`/projects/[slug]`>) {
 	};
 
 	return (
-		<div className={styles.container}>
+		<article className={styles.container}>
 			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
 			/>
-			<div className={styles.header}>
+			<header className={styles.header}>
 				<div className={styles.titleRow}>
 					{project.projectUrl ? (
 						<a href={project.projectUrl} target="_blank" className={styles.projectLink}>
@@ -104,15 +104,17 @@ async function ProjectPage({ params }: PageProps<`/projects/[slug]`>) {
 					)}
 				</div>
 				{project.githubUrl && (
-					<a href={project.githubUrl} target="_blank" className={styles.githubLink}>
-						<Image src="/github.svg" width={32} height={32} alt="GitHub" />
-					</a>
+					<aside>
+						<a href={project.githubUrl} target="_blank" className={styles.githubLink}>
+							<Image src="/github.svg" width={32} height={32} alt="GitHub" />
+						</a>
+					</aside>
 				)}
-			</div>
+			</header>
 			{project.gallery?.length > 0 && (
-				<div className={styles.mediaSection}>
+				<figure className={styles.mediaSection}>
 					<Carousel gallery={project.gallery || []} />
-				</div>
+				</figure>
 			)}
 			<section className={`${styles.techSection} ${styles.content}`}>
 				<h2>Technologies Used</h2>
@@ -133,7 +135,7 @@ async function ProjectPage({ params }: PageProps<`/projects/[slug]`>) {
 			<section className={`${styles.description} ${styles.content}`}>
 				<RichTextRenderer nodes={project.description} />
 			</section>
-		</div>
+		</article>
 	);
 };
 

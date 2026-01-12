@@ -112,9 +112,9 @@ async function Resume() {
  * @param colleges The colleges I want listed on the resume
  * @returns An array of elements filled with content and styled
  */
-function assembleCollegeChildren(colleges: College[]): JSX.Element[] {
-	const children: JSX.Element[] = colleges.map((college) => {
-		const degreeChildren: JSX.Element[] = college.degrees.map((degree) => {
+function assembleCollegeChildren(colleges: College[]): React.JSX.Element[] {
+	const children: React.JSX.Element[] = colleges.map((college) => {
+		const degreeChildren: React.JSX.Element[] = college.degrees.map((degree) => {
 			const options: Intl.DateTimeFormatOptions = {
 				month: "short",
 				day: "numeric",
@@ -152,7 +152,7 @@ function assembleCollegeChildren(colleges: College[]): JSX.Element[] {
  * @param techcategories The technologies I want listed on my resume
  * @returns The skills listed out
  */
-function assembleSkillChild(techcategories: TechCategory[]): JSX.Element {
+function assembleSkillChild(techcategories: TechCategory[]): React.JSX.Element {
 	const final: Record<string, string> = {};
 	for (let i = 0; i < techcategories.length; i++) {
 		const techcategory = techcategories[i];
@@ -184,7 +184,7 @@ function assembleSkillChild(techcategories: TechCategory[]): JSX.Element {
  * @param employers The employers I want listed on my resume
  * @returns An array of contentful, styled jsx elements
  */
-function assembleWorkExperience(employers: Employer[]): JSX.Element[] {
+function assembleWorkExperience(employers: Employer[]): React.JSX.Element[] {
 	const final = [];
 	for (const employer of employers) {
 		const options: Intl.DateTimeFormatOptions = {
@@ -194,7 +194,7 @@ function assembleWorkExperience(employers: Employer[]): JSX.Element[] {
 		};
 		const startDate = assembleDate(employer.startDate, options);
 		const endDate = assembleDate(employer.endDate, options);
-		const accomplishmentList: JSX.Element[] = employer.accomplishments.map((accomplishment) => {
+		const accomplishmentList: React.JSX.Element[] = employer.accomplishments.map((accomplishment) => {
 			return <li key={`Accomplishment - ${accomplishment.id}`}>{accomplishment.value}</li>;
 		});
 		final.push(
@@ -221,7 +221,7 @@ function assembleWorkExperience(employers: Employer[]): JSX.Element[] {
  * @param projects The projects I want listed on my resume
  * @returns An array of styled, contentful elements
  */
-function assembleProjectStuff(projects: Project[]): JSX.Element[] {
+function assembleProjectStuff(projects: Project[]): React.JSX.Element[] {
 	const finalProjects = projects.map((project) => {
 		const options: Intl.DateTimeFormatOptions = {
 			month: "short",
