@@ -3,7 +3,7 @@ User-agent: *
 Disallow: /
 
 # Host
-Host: https://portfolio.eric-webb.dev
+Host: https://portfolio.eric-webb.dev/
 
 # Sitemaps
 Sitemap: https://portfolio.eric-webb.dev/sitemap.xml

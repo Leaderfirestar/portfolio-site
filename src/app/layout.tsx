@@ -19,7 +19,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 				{/* Top Nav (desktop) */}
 				<Nav top={true} />
 
-				{children}
+				<main>
+					{children}
+				</main>
 
 				{/* Footer */}
 				<footer className={styles.contactInfoContainer}>
