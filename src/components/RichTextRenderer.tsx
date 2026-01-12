@@ -9,7 +9,7 @@ function RichTextRenderer({ nodes }: RichTextRendererProps) {
 	function renderNode(node: RichTextNode, key: React.Key): React.ReactNode {
 		switch (node.type) {
 			case 'heading':
-				const HeadingTag = `h${node.level}` as keyof JSX.IntrinsicElements;
+				const HeadingTag = `h${node.level}` as keyof React.JSX.IntrinsicElements;
 				return <HeadingTag key={key}>{renderNodes(node.children)}</HeadingTag>;
 			case 'paragraph':
 				return <p key={key}>{renderNodes(node.children)}</p>;

@@ -68,7 +68,7 @@ export default async function Home() {
 		}
 	};
 	return (
-		<main>
+		<div>
 			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
 			<div className={styles.container}>
 				<div className={styles.textContainer}>
@@ -82,7 +82,7 @@ export default async function Home() {
 					</div>
 				</div>
 				{personalInfo.profile?.url && (
-					<div className={styles.profileContainer}>
+					<figure className={styles.profileContainer}>
 						<Image
 							src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${personalInfo.profile.url}`}
 							alt={personalInfo.profile.alternativeText}
@@ -91,9 +91,9 @@ export default async function Home() {
 							className={styles.profile}
 							priority
 						/>
-					</div>
+					</figure>
 				)}
 			</div>
-		</main>
+		</div>
 	);
 }
