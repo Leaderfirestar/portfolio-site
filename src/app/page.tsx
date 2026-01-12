@@ -82,7 +82,7 @@ export default async function Home() {
 					</div>
 				</div>
 				{personalInfo.profile?.url && (
-					<div className={styles.profileContainer}>
+					<figure className={styles.profileContainer}>
 						<Image
 							src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${personalInfo.profile.url}`}
 							alt={personalInfo.profile.alternativeText}
@@ -91,7 +91,7 @@ export default async function Home() {
 							className={styles.profile}
 							priority
 						/>
-					</div>
+					</figure>
 				)}
 			</div>
 		</div>
